@@ -29,6 +29,16 @@ class ProjectController extends Controller
         return view('projects/index')->with('projects', $projects);
     }
 
+    public function mainMenu($projectId)
+    {
+        $project = Project::findOrFail($projectId);
+        $contributors = $this->contributorService->getUser($projectId);
+        return view('projects/mainmenu')->with([
+            'project' => $project,
+            'contributors' => $contributors
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

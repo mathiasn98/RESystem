@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/project/{projectId}', 'ProjectController@mainMenu')->middleware('auth');
+
 Route::resource('project', 'ProjectController')->middleware('auth');
 
 Route::get('/', function () {
