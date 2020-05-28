@@ -47,6 +47,27 @@ class ProjectController extends Controller
         return $projects;
     }
 
+    private function getLastProcessIndex($last_process){
+        switch ($last_process){
+            case "BUSINESS_GOALS":
+                return 0;
+            case "CBP":
+                return 1;
+            case "FIND_PATTERN":
+                return 2;
+            case "FBP":
+                return 3;
+            case "REQ_DEF":
+                return 4;
+            case "ACCEPTANCE":
+                return 5;
+            case "COMPLETED":
+                return 6;
+            default:
+                return 7;
+        }
+    }
+
 //    /**
 //     * Display a listing of the resource.
 //     *
@@ -106,7 +127,9 @@ class ProjectController extends Controller
         {
             $this->contributorService->storeContributor($project->id, $request->input('contributor'));
 
-            return redirect()->route('project.show', [$project->id]);
+            return redirect()->route('project.show')->with([
+                'project' => $project->id,
+            ]);
         }
     }
 
@@ -132,7 +155,8 @@ class ProjectController extends Controller
             return view('projects/show', [
                 'project' => $project,
                 'contributors' => $contributors,
-                'last_process' => $last_process
+                'last_process' => $last_process,
+                'lastProcessIndex' => $this->getLastProcessIndex($project->last_process)
             ]);
         } else {
             return abort(403);

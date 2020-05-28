@@ -1,5 +1,6 @@
 @extends('layouts.extended_app')
 @section('content')
+    <input id="lastProcessIndex" type="hidden" value="{{ $lastProcessIndex }}">
     <div class="container pl-1 pr-1">
         <div class="jumbotron">
             <h2 class="display-4" style="display: inline-block">{{ $project->name }}</h2>
@@ -80,9 +81,15 @@
                 <div class="step-content">
                     <div>Kebutuhan dapat diunduh pada link <a>berikut</a></div>
                     <div class="step-actions">
-                        <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
-                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>
+                        <button class="waves-effect waves-dark btn btn-success">SETUJU</button>
+                        <button class="waves-effect waves-dark btn btn-danger ml-2">TOLAK</button>
                     </div>
+                </div>
+            </li>
+            <li class="step inactive">
+                <div class="step-title waves-effect">Unduh Kebutuhan</div>
+                <div class="step-content">
+                    <div>Kebutuhan dapat diunduh pada link <a>berikut</a></div>
                 </div>
             </li>
         </ul>
@@ -93,9 +100,17 @@
     <script>
         var stepper = document.querySelector('.stepper');
         var stepperInstance = new MStepper(stepper, {
-            firstActive: 0,
+            firstActive: $('#lastProcessIndex').val(),
             linearStepsNavigation: true
         });
+        var steps = $('.step');
+        console.log($('#lastProcessIndex').val());
+        for (var i=0; i<$('#lastProcessIndex').val();i++){
+            steps[i].classList.add('done');
+        }
+        // for (const step of steps) {
+        //     step.classList.add('done');
+        // }
     </script>
 @endpush
 
