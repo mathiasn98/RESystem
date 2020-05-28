@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use App\Services\ContributorService;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,7 +47,9 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all()->pluck('username')->toArray();
+
+        return view('projects/create')->with('users', $users);
     }
 
     /**
@@ -57,7 +60,20 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $project = new Project();
+
+        $project->name = $request->input('name');
+        $project->description = $request->input('description');
+        $project->created_by = Auth::user()->username;
+        $project->updated_by = Auth::user()->username;
+        $project->last_process = $request->input('last_process');
+
+        if($project->save())
+        {
+            $this->contributorService->storeContributor($project->id, $request->input('contributor'));
+
+            return redirect()->route('project.show', ['id' => $project->id]);
+        }
     }
 
     /**

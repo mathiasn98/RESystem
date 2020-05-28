@@ -19,4 +19,22 @@ class ContributorService
         return User::whereIn('id', $user_ids)->get();
     }
 
+    public function storeContributor($project_id, array $usernames)
+    {
+        foreach ($usernames as $username)
+        {
+            $contributor = new Contributor;
+
+            $user_id = User::where('username', $username)->pluck('id');
+            $contributor->user_id = $user_id[0];
+            $contributor->project_id = $project_id;
+
+            if($contributor->save()) {
+                //
+            } else {
+                return abort(404);
+            };
+        }
+    }
+
 }
