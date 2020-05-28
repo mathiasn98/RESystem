@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 //Route::get('/project/{projectId}', 'ProjectController@mainMenu')->middleware('auth');
+Auth::routes();
 
 Route::resource('project', 'ProjectController')->middleware('auth');
 Route::post('get-all-user', [
@@ -25,11 +26,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
