@@ -17,6 +17,14 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::resource('project', 'ProjectController')->middleware('auth');
+
+Route::get('/project/{project_id}/business_goals', [
+    'as' => 'project.business_goals',
+    'uses' => 'ProjectController@businessGoals'
+])->middleware('auth');
+
+Route::resource('project.business_goal', 'BusinessGoalController')->middleware('auth');
+
 Route::post('get-all-user', [
     'as' => 'get-all-user',
     'uses' => 'UserController@getAllUser'
