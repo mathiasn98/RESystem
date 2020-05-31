@@ -23,7 +23,13 @@ Route::get('/project/{project_id}/business_goals', [
     'uses' => 'ProjectController@businessGoals'
 ])->middleware('auth');
 
+Route::get('/project/{project_id}/requirements_definition', [
+    'as' => 'project.requirements_definition',
+    'uses' => 'ProjectController@requirementsDefintion'
+])->middleware('auth');
+
 Route::resource('project.business_goal', 'BusinessGoalController')->middleware('auth');
+Route::resource('project.requirements_definition', 'RequirementController')->middleware('auth');
 
 Route::post('get-all-user', [
     'as' => 'get-all-user',

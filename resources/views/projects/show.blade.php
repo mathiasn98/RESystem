@@ -77,6 +77,16 @@
                 </div>
             </li>
             <li class="step inactive">
+                <div class="step-title waves-effect">Pendefinisian Kebutuhan</div>
+                <div class="step-content">
+                    <div>Definisikan kebutuhan fungsional dan non-fungsional dari proyek Anda</div>
+                    <div class="step-actions">
+                        <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
+                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>
+                    </div>
+                </div>
+            </li>
+            <li class="step inactive">
                 <div class="step-title waves-effect">Persetujuan</div>
                 <div class="step-content">
                     <div>Kebutuhan dapat diunduh pada link <a>berikut</a></div>

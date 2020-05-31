@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Project;
 use App\Services\BusinessGoalService;
 use App\Services\ContributorService;
+use App\Services\RequirementService;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,11 +14,13 @@ class ProjectController extends Controller
 {
     protected $contributorService;
     protected $businessGoalService;
+    protected $requirementService;
 
-    public function __construct(ContributorService $contributorService, BusinessGoalService $businessGoalService)
+    public function __construct(ContributorService $contributorService, BusinessGoalService $businessGoalService, RequirementService $requirementService)
     {
         $this->contributorService = $contributorService;
         $this->businessGoalService = $businessGoalService;
+        $this->requirementService = $requirementService;
     }
 //'last_process' => $faker->randomElement(['BUSINESS_GOALS', 'CBP', 'FIND_PATTERN', 'FBP', 'REQ_DEF', 'ACCEPTANCE'])
 
@@ -245,5 +248,11 @@ class ProjectController extends Controller
     {
         $project = Project::findOrFail($project_id);
         return view('projects/business_goals')->with('project', $project)->with('initBusinessGoals', $this->businessGoalService->getBusinessGoalsByProject($project->id));
+    }
+
+    public function requirementsDefintion($project_id)
+    {
+        $project = Project::findOrFail($project_id);
+        return view('projects/requirements_definition')->with('project', $project)->with('initRequirements', $this->requirementService->getRequirementsByProject($project_id));
     }
 }
