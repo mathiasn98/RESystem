@@ -34,15 +34,16 @@
     </div>
 
     <div class="container pl-1 pr-1">
-        <ul class="stepper linear">
+        <ul class="stepper">
             <li class="step active">
                 <div class="step-title waves-effect">Business Goals</div>
                 <div class="step-content">
-                    <div>Definisi Business Goals</div>
-                    <!-- Your step content goes here (like inputs or so) -->
+                    <div>Apa tujuan Anda melalui proyek ini?</div>
+                    <div>Contoh: <b>Mengurangi waktu antrean</b></div>
+
                     <div class="step-actions">
-                        <!-- Here goes your actions buttons -->
-                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>
+                        <a class="btn btn-primary" href="{{ route('project.business_goals', [$project->id]) }}">LIHAT</a>
+{{--                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>--}}
                     </div>
                 </div>
             </li>
@@ -52,7 +53,7 @@
                     <div>Unggah atau gambarkan proses bisnismu saat ini</div>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
-                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>
+{{--                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>--}}
                     </div>
                 </div>
             </li>
@@ -62,7 +63,7 @@
                     <div>Cari pola untuk Proses Bisnismu</div>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
-                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>
+{{--                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>--}}
                     </div>
                 </div>
             </li>
@@ -72,7 +73,7 @@
                     <div>Definisikan proses bisnis dari sistem yang ingin Anda buat</div>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
-                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>
+{{--                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>--}}
                     </div>
                 </div>
             </li>
@@ -82,7 +83,8 @@
                     <div>Definisikan kebutuhan fungsional dan non-fungsional dari proyek Anda</div>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
-                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>
+                        <a class="btn btn-primary" href="{{ route('project.requirements_definition', [$project->id]) }}">LIHAT</a>
+                        {{--                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>--}}
                     </div>
                 </div>
             </li>
@@ -126,15 +128,24 @@
             var stepper = document.querySelector('.stepper');
             var stepperInstance = new MStepper(stepper, {
                 firstActive: $('#lastProcessIndex').val(),
-                linearStepsNavigation: true
+                linearStepsNavigation: true,
+                // stepTitleNavigation: false
             });
-            var steps = $('.step');
             console.log($('#lastProcessIndex').val());
+            var steps = $('.step');
             for (var i=0; i<$('#lastProcessIndex').val();i++){
                 steps[i].classList.add('done');
             }
 
         });
+
+        $('.step-title').click(function(e) {
+            var steps = $('.step');
+            for (var i=0; i<$('#lastProcessIndex').val();i++){
+                steps[i].classList.add('done');
+            }
+        });
+
         $('.reject-req').click(function (e) {
             e.preventDefault();
             $.confirm({
@@ -186,12 +197,6 @@
                 }
             })
         });
-
-
-
-        // for (const step of steps) {
-        //     step.classList.add('done');
-        // }
     </script>
 @endpush
 
