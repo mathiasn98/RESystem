@@ -5,22 +5,26 @@ namespace App\Http\Controllers;
 use App\Project;
 use App\Services\BusinessGoalService;
 use App\Services\ContributorService;
+use App\Services\ProjectService;
 use App\Services\RequirementService;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ProjectController extends Controller
 {
     protected $contributorService;
     protected $businessGoalService;
     protected $requirementService;
+    protected $projectService;
 
-    public function __construct(ContributorService $contributorService, BusinessGoalService $businessGoalService, RequirementService $requirementService)
+    public function __construct(ContributorService $contributorService, BusinessGoalService $businessGoalService, RequirementService $requirementService, ProjectService $projectService)
     {
         $this->contributorService = $contributorService;
         $this->businessGoalService = $businessGoalService;
         $this->requirementService = $requirementService;
+        $this->projectService = $projectService;
     }
 //'last_process' => $faker->randomElement(['BUSINESS_GOALS', 'CBP', 'FIND_PATTERN', 'FBP', 'REQ_DEF', 'ACCEPTANCE'])
 
@@ -254,5 +258,27 @@ class ProjectController extends Controller
     {
         $project = Project::findOrFail($project_id);
         return view('projects/requirements_definition')->with('project', $project)->with('initRequirements', $this->requirementService->getRequirementsByProject($project_id));
+    }
+
+    public function rejectRequirements(Request $request)
+    {
+        if ($this->projectService->updateLastProcess($request->project_id, $request->reject_from)){
+            if ($request->reject_from == 'BUSINESS_GOALS'){
+                return redirect()->to('/project/'.$request->project_id.'/business_goals');
+            } else {
+                return redirect()->to('/project/'.$request->project_id.'/requirements_definition');
+            }
+        } else {
+            return abort(404);
+        }
+    }
+
+    public function acceptRequirements(Request $request)
+    {
+        if ($this->projectService->updateLastProcess($request->project_id, 'COMPLETED')){
+            return $this->show($request->project_id);
+        } else {
+            return abort(404);
+        }
     }
 }

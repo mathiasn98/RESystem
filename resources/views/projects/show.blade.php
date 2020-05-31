@@ -91,8 +91,8 @@
                 <div class="step-content">
                     <div>Kebutuhan dapat diunduh pada link <a>berikut</a></div>
                     <div class="step-actions">
-                        <button class="waves-effect waves-dark btn btn-success">SETUJU</button>
-                        <button class="waves-effect waves-dark btn btn-danger ml-2">TOLAK</button>
+                        <button class="accept-req waves-effect waves-dark btn btn-success">SETUJU</button>
+                        <button class="reject-req btn btn-danger ml-2">TOLAK</button>
                     </div>
                 </div>
             </li>
@@ -103,21 +103,92 @@
                 </div>
             </li>
         </ul>
+        <form id="rejectProcess" method="POST" action="{{ route('project.reject') }}" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <input id="project_id" name="project_id" class="form-control" type="hidden" value="{{ $project->id }}">
+                <input id="reject_from" name="reject_from" class="form-control" type="hidden" value=""/>
+            </div>
+        </form>
+
+        <form id="acceptProcess" method="POST" action="{{ route('project.accept') }}" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <input id="project_id" name="project_id" class="form-control" type="hidden" value="{{ $project->id }}">
+            </div>
+        </form>
     </div>
 @endsection
 
 @push('body_scripts')
     <script>
-        var stepper = document.querySelector('.stepper');
-        var stepperInstance = new MStepper(stepper, {
-            firstActive: $('#lastProcessIndex').val(),
-            linearStepsNavigation: true
+        $(document).ready(function() {
+            var stepper = document.querySelector('.stepper');
+            var stepperInstance = new MStepper(stepper, {
+                firstActive: $('#lastProcessIndex').val(),
+                linearStepsNavigation: true
+            });
+            var steps = $('.step');
+            console.log($('#lastProcessIndex').val());
+            for (var i=0; i<$('#lastProcessIndex').val();i++){
+                steps[i].classList.add('done');
+            }
+
         });
-        var steps = $('.step');
-        console.log($('#lastProcessIndex').val());
-        for (var i=0; i<$('#lastProcessIndex').val();i++){
-            steps[i].classList.add('done');
-        }
+        $('.reject-req').click(function (e) {
+            e.preventDefault();
+            $.confirm({
+                title: 'Tolak Kebutuhan',
+                content: 'Ulangi dari tahap?',
+                buttons: {
+                    fromBusinessGoals: {
+                        text: 'Business Goals',
+                        btnClass: 'btn-red',
+                        keys: ['enter', 'shift'],
+                        action: function(){
+                            $('#reject_from').val('BUSINESS_GOALS');
+                            $('#rejectProcess').submit();
+                        }
+                    },
+                    fromRequirementsDefinition: {
+                        text: 'Pendefinisian Kebutuhan',
+                        btnClass: 'btn-blue',
+                        keys: ['enter', 'shift'],
+                        action: function(){
+                            $('#reject_from').val('REQ_DEF');
+                            $('#rejectProcess').submit();
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.accept-req').click(function (e) {
+            e.preventDefault();
+            $.confirm({
+                title: 'Persetujuan',
+                content: 'Setujui kebutuhan?',
+                buttons: {
+                    confirm: {
+                        text: 'Setujui',
+                        btnClass: 'btn-primary',
+                        action: function(){
+                            $('#acceptProcess').submit();
+                        }
+                    },
+                    cancel: {
+                        text: 'Batal',
+                        btnClass: 'btn-danger',
+                        action: function(){
+
+                        }
+                    }
+                }
+            })
+        });
+
+
+
         // for (const step of steps) {
         //     step.classList.add('done');
         // }
@@ -127,6 +198,7 @@
 @push('head_scripts')
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/materialize-stepper@3.1.0/dist/js/mstepper.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 @endpush
 
 @push('head_styles')
@@ -135,4 +207,5 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 @endpush

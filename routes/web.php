@@ -36,6 +36,16 @@ Route::post('get-all-user', [
     'uses' => 'UserController@getAllUser'
 ]);
 
+Route::post('/project/reject', [
+    'as' => 'project.reject',
+    'uses' => 'ProjectController@rejectRequirements'
+])->middleware('auth');
+
+Route::post('/project/accept', [
+    'as' => 'project.accept',
+    'uses' => 'ProjectController@acceptRequirements'
+])->middleware('auth');
+
 Route::get('/', function () {
     return view('welcome');
 });

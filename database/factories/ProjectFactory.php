@@ -13,6 +13,6 @@ $factory->define(\App\Project::class, function (Faker $faker) {
         'description' => $faker->sentence(),
         'created_by' => $faker->randomElement($users),
         'updated_by' => $faker->randomElement($users),
-        'last_process' => $faker->randomElement(['BUSINESS_GOALS', 'CBP', 'FIND_PATTERN', 'FBP', 'REQ_DEF', 'ACCEPTANCE'])
+        'last_process' => $faker->randomElement(['BUSINESS_GOALS', 'CBP', 'FIND_PATTERN', 'FBP', 'REQ_DEF', 'ACCEPTANCE', 'COMPLETED'])
     ];
 });
