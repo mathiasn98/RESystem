@@ -287,14 +287,22 @@ class ProjectController extends Controller
 
     public function getCurrentBusinessProcess($project_id){
         $project = Project::findOrFail($project_id);
+        Log::debug($this->businessProcessService->getBusinessProcessByProjectAndType($project_id, 'CBP'));
         $bpmn = $this->businessProcessService->getBusinessProcessByProjectAndType($project_id, 'CBP')[0]['bpmn'];
         return view('projects/current_business_process')->with('project', $project)->with('bpmn', $bpmn);
+    }
+
+    public function getFutureBusinessProcess($project_id){
+        $project = Project::findOrFail($project_id);
+        $bpmn = $this->businessProcessService->getBusinessProcessByProjectAndType($project_id, 'FBP')[0]['bpmn'];
+        return view('projects/future_business_process')->with('project', $project)->with('bpmn', $bpmn);
     }
 
     public function saveBusinessProcess(Request $request)
     {
         if ($this->businessProcessService->updateBusinessProcess($request->project_id, $request->type, $request->bpmn)){
-            $this->projectService->updateLastProcess($request->project_id, 'FIND_PATTERN');
+            $nextLastProcess = ($request->type == 'CBP' ? 'FIND_PATTERN' : 'REQ_DEF');
+            $this->projectService->updateLastProcess($request->project_id, $nextLastProcess);
             return redirect()->to('/project/'.$request->project_id);
         } else {
             return abort(404);
