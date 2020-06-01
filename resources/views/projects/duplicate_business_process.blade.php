@@ -7,9 +7,8 @@
                 <h2 style="display: inline-block">Future Business Process</h2>
                 <a class="btn btn-danger float-right" href="{{ URL::previous() }}" style="display: inline-block">Batal</a>
                 <button id="save-button" type="submit" class="btn btn-success float-right mr-2" style="display: inline-block">Simpan</button>
-                <a class="btn btn-primary float-right mr-4" href="{{ route('project.duplicate_business_process', [$project->id]) }}" style="display: inline-block">Gunakan Current Business Process</a>
                 <div>Gambarkan Proses Bisnis yang telah dijalankan di perusahaan</div>
-                <div style="display: inline-block">Anda juga dapat menggunakan Current Business Process</div>
+                <div style="display: inline-block">Ubah Current Business Process Anda menjadi Proses Bisnis yang diinginkan</div>
             </div>
             <input id="this-noise" type="hidden" />
             <input id="bpmn-value" name="bpmn" type="hidden"

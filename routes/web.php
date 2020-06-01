@@ -38,6 +38,11 @@ Route::get('/project/{project_id}/future_business_process', [
     'uses' => 'ProjectController@getFutureBusinessProcess'
 ])->middleware('auth');
 
+Route::get('/project/{project_id}/duplicate_business_process', [
+    'as' => 'project.duplicate_business_process',
+    'uses' => 'ProjectController@duplicateBusinessProcess'
+])->middleware('auth');
+
 Route::resource('project.business_goal', 'BusinessGoalController')->middleware('auth');
 Route::resource('project.requirements_definition', 'RequirementController')->middleware('auth');
 

@@ -298,6 +298,12 @@ class ProjectController extends Controller
         return view('projects/future_business_process')->with('project', $project)->with('bpmn', $bpmn);
     }
 
+    public function duplicateBusinessProcess($project_id){
+        $project = Project::findOrFail($project_id);
+        $bpmn = $this->businessProcessService->getBusinessProcessByProjectAndType($project_id, 'CBP')[0]['bpmn'];
+        return view('projects/duplicate_business_process')->with('project', $project)->with('bpmn', $bpmn);
+    }
+
     public function saveBusinessProcess(Request $request)
     {
         if ($this->businessProcessService->updateBusinessProcess($request->project_id, $request->type, $request->bpmn)){
