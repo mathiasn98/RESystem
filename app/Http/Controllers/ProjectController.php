@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use App\Services\BusinessGoalService;
+use App\Services\BusinessProcessService;
 use App\Services\ContributorService;
 use App\Services\ProjectService;
 use App\Services\RequirementService;
@@ -18,13 +19,15 @@ class ProjectController extends Controller
     protected $businessGoalService;
     protected $requirementService;
     protected $projectService;
+    protected $businessProcessService;
 
-    public function __construct(ContributorService $contributorService, BusinessGoalService $businessGoalService, RequirementService $requirementService, ProjectService $projectService)
+    public function __construct(ContributorService $contributorService, BusinessGoalService $businessGoalService, RequirementService $requirementService, ProjectService $projectService, BusinessProcessService $businessProcessService)
     {
         $this->contributorService = $contributorService;
         $this->businessGoalService = $businessGoalService;
         $this->requirementService = $requirementService;
         $this->projectService = $projectService;
+        $this->businessProcessService = $businessProcessService;
     }
 //'last_process' => $faker->randomElement(['BUSINESS_GOALS', 'CBP', 'FIND_PATTERN', 'FBP', 'REQ_DEF', 'ACCEPTANCE'])
 
@@ -277,6 +280,22 @@ class ProjectController extends Controller
     {
         if ($this->projectService->updateLastProcess($request->project_id, 'COMPLETED')){
             return $this->show($request->project_id);
+        } else {
+            return abort(404);
+        }
+    }
+
+    public function getCurrentBusinessProcess($project_id){
+        $project = Project::findOrFail($project_id);
+        $bpmn = $this->businessProcessService->getBusinessProcessByProjectAndType($project_id, 'CBP')[0]['bpmn'];
+        return view('projects/current_business_process')->with('project', $project)->with('bpmn', $bpmn);
+    }
+
+    public function saveBusinessProcess(Request $request)
+    {
+        if ($this->businessProcessService->updateBusinessProcess($request->project_id, $request->type, $request->bpmn)){
+            $this->projectService->updateLastProcess($request->project_id, 'FIND_PATTERN');
+            return redirect()->to('/project/'.$request->project_id);
         } else {
             return abort(404);
         }

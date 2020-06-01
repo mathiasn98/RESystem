@@ -28,6 +28,11 @@ Route::get('/project/{project_id}/requirements_definition', [
     'uses' => 'ProjectController@requirementsDefintion'
 ])->middleware('auth');
 
+Route::get('/project/{project_id}/current_business_process', [
+    'as' => 'project.current_business_process',
+    'uses' => 'ProjectController@getCurrentBusinessProcess'
+])->middleware('auth');
+
 Route::resource('project.business_goal', 'BusinessGoalController')->middleware('auth');
 Route::resource('project.requirements_definition', 'RequirementController')->middleware('auth');
 
@@ -44,6 +49,11 @@ Route::post('/project/reject', [
 Route::post('/project/accept', [
     'as' => 'project.accept',
     'uses' => 'ProjectController@acceptRequirements'
+])->middleware('auth');
+
+Route::post('/project/save_business_process', [
+    'as' => 'project.save_business_process',
+    'uses' => 'ProjectController@saveBusinessProcess'
 ])->middleware('auth');
 
 Route::get('/', function () {
