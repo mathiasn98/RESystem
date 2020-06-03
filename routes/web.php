@@ -77,8 +77,8 @@ Route::post('/project/use_pattern', [
 ])->middleware('auth');
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return redirect(route('project.index'));
+})->middleware('auth');
 
 
 Route::get('/home', 'HomeController@index')->name('home');
