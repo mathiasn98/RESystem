@@ -43,6 +43,11 @@ Route::get('/project/{project_id}/duplicate_business_process', [
     'uses' => 'ProjectController@duplicateBusinessProcess'
 ])->middleware('auth');
 
+Route::get('/project/{project_id}/find_pattern', [
+    'as' => 'project.find_pattern',
+    'uses' => 'ProjectController@findPattern'
+])->middleware('auth');
+
 Route::resource('project.business_goal', 'BusinessGoalController')->middleware('auth');
 Route::resource('project.requirements_definition', 'RequirementController')->middleware('auth');
 
@@ -64,6 +69,11 @@ Route::post('/project/accept', [
 Route::post('/project/save_business_process', [
     'as' => 'project.save_business_process',
     'uses' => 'ProjectController@saveBusinessProcess'
+])->middleware('auth');
+
+Route::post('/project/use_pattern', [
+    'as' => 'project.use_pattern',
+    'uses' => 'ProjectController@usePattern'
 ])->middleware('auth');
 
 Route::get('/', function () {

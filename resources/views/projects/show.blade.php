@@ -65,7 +65,8 @@
                     <div>Cari pola untuk Proses Bisnismu</div>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
-{{--                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>--}}
+                        <a class="btn btn-primary" href="{{ route('project.find_pattern', [$project->id]) }}">LIHAT</a>
+                        {{--                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>--}}
                     </div>
                 </div>
             </li>

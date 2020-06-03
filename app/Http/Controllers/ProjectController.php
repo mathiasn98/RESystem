@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BpmnPattern;
 use App\Project;
 use App\Services\BusinessGoalService;
 use App\Services\BusinessProcessService;
@@ -287,14 +288,17 @@ class ProjectController extends Controller
 
     public function getCurrentBusinessProcess($project_id){
         $project = Project::findOrFail($project_id);
-        Log::debug($this->businessProcessService->getBusinessProcessByProjectAndType($project_id, 'CBP'));
         $bpmn = $this->businessProcessService->getBusinessProcessByProjectAndType($project_id, 'CBP')[0]['bpmn'];
         return view('projects/current_business_process')->with('project', $project)->with('bpmn', $bpmn);
     }
 
-    public function getFutureBusinessProcess($project_id){
+    public function getFutureBusinessProcess($project_id, $pattern_id = -1){
         $project = Project::findOrFail($project_id);
-        $bpmn = $this->businessProcessService->getBusinessProcessByProjectAndType($project_id, 'FBP')[0]['bpmn'];
+        if ($pattern_id == -1){
+            $bpmn = $this->businessProcessService->getBusinessProcessByProjectAndType($project_id, 'FBP')[0]['bpmn'];
+        } else {
+            $bpmn = BpmnPattern::findOrFail($pattern_id)->pluck('bpmn')[0];
+        }
         return view('projects/future_business_process')->with('project', $project)->with('bpmn', $bpmn);
     }
 
@@ -302,6 +306,11 @@ class ProjectController extends Controller
         $project = Project::findOrFail($project_id);
         $bpmn = $this->businessProcessService->getBusinessProcessByProjectAndType($project_id, 'CBP')[0]['bpmn'];
         return view('projects/duplicate_business_process')->with('project', $project)->with('bpmn', $bpmn);
+    }
+
+    public function findPattern($project_id){
+        $patterns = BpmnPattern::select(['id', 'title', 'description', 'category'])->get();
+        return view('projects/find_pattern')->with('project_id', $project_id)->with('patterns', $patterns);
     }
 
     public function saveBusinessProcess(Request $request)
@@ -313,5 +322,10 @@ class ProjectController extends Controller
         } else {
             return abort(404);
         }
+    }
+
+    public function usePattern(Request $request)
+    {
+        return $this->getFutureBusinessProcess($request->project_id, $request->pattern_id);
     }
 }
