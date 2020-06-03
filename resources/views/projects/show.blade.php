@@ -53,8 +53,11 @@
                     <div>Unggah atau gambarkan proses bisnismu saat ini</div>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
-                        <a class="btn btn-primary" href="{{ route('project.current_business_process', [$project->id]) }}">LIHAT</a>
-
+                        @if($lastProcessIndex >= 1)
+                            <a class="btn btn-primary" href="{{ route('project.current_business_process', [$project->id]) }}">LIHAT</a>
+                        @else
+                            <a class="btn btn-primary trigger-alert" href="#">LIHAT</a>
+                        @endif
                         {{--                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>--}}
                     </div>
                 </div>
@@ -65,8 +68,12 @@
                     <div>Cari pola untuk Proses Bisnismu</div>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
-                        <a class="btn btn-primary" href="{{ route('project.find_pattern', [$project->id]) }}">LIHAT</a>
-                        {{--                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>--}}
+                        @if($lastProcessIndex >=2)
+                            <a class="btn btn-primary" href="{{ route('project.find_pattern', [$project->id]) }}">LIHAT</a>
+                        @else
+                            <a class="btn btn-primary trigger-alert" href="#">LIHAT</a>
+                        @endif
+                            {{--                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>--}}
                     </div>
                 </div>
             </li>
@@ -76,7 +83,11 @@
                     <div>Definisikan proses bisnis dari sistem yang ingin Anda buat</div>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
-                        <a class="btn btn-primary" href="{{ route('project.future_business_process', [$project->id]) }}">LIHAT</a>
+                        @if($lastProcessIndex >= 3)
+                            <a class="btn btn-primary" href="{{ route('project.future_business_process', [$project->id]) }}">LIHAT</a>
+                        @else
+                            <a class="btn btn-primary trigger-alert" href="#">LIHAT</a>
+                        @endif
                         {{--                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>--}}
                     </div>
                 </div>
@@ -87,7 +98,11 @@
                     <div>Definisikan kebutuhan fungsional dan non-fungsional dari proyek Anda</div>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
-                        <a class="btn btn-primary" href="{{ route('project.requirements_definition', [$project->id]) }}">LIHAT</a>
+                        @if($lastProcessIndex >= 4)
+                            <a class="btn btn-primary" href="{{ route('project.requirements_definition', [$project->id]) }}">LIHAT</a>
+                        @else
+                            <a class="btn btn-primary trigger-alert" href="#">LIHAT</a>
+                        @endif
                         {{--                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>--}}
                     </div>
                 </div>
@@ -96,16 +111,25 @@
                 <div class="step-title waves-effect">Persetujuan</div>
                 <div class="step-content">
                     <div>Kebutuhan dapat diunduh pada link <a>berikut</a></div>
-                    <div class="step-actions">
-                        <button class="accept-req waves-effect waves-dark btn btn-success">SETUJU</button>
-                        <button class="reject-req btn btn-danger ml-2">TOLAK</button>
-                    </div>
+                        <div class="step-actions">
+                            @if($lastProcessIndex >= 5)
+                                <button class="accept-req waves-effect waves-dark btn btn-success">SETUJU</button>
+                                <button class="reject-req btn btn-danger ml-2">TOLAK</button>
+                            @else
+                                <button class="btn btn-success trigger-alert" href="#">SETUJU</button>
+                                <button class="btn btn-danger trigger-alert" href="#">TOLAK</button>
+                            @endif
+                        </div>
                 </div>
             </li>
             <li class="step inactive">
                 <div class="step-title waves-effect">Unduh Kebutuhan</div>
                 <div class="step-content">
-                    <div>Kebutuhan dapat diunduh pada link <a>berikut</a></div>
+                    @if($lastProcessIndex >= 6)
+                        <div>Kebutuhan dapat diunduh pada link <a>berikut</a></div>
+                    @else
+                        <div class="text-danger">Selesaikan tahap sebelumnya terlebih dahulu</div>
+                    @endif
                 </div>
             </li>
         </ul>
@@ -140,6 +164,10 @@
             for (var i=0; i<$('#lastProcessIndex').val();i++){
                 steps[i].classList.add('done');
             }
+            $('.trigger-alert').click(function(e) {
+                e.preventDefault();
+                alert('Silakan selesaikan tahapan sebelumnya terlebih dahulu');
+            })
 
         });
 
