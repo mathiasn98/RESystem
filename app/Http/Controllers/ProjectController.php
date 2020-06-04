@@ -141,7 +141,7 @@ class ProjectController extends Controller
         {
             $this->contributorService->storeContributor($project->id, $request->input('contributor'));
 
-            return redirect()->route('project.show')->with([
+            return redirect()->route('project.index')->with([
                 'project' => $project->id,
             ]);
         }
@@ -297,7 +297,7 @@ class ProjectController extends Controller
         if ($pattern_id == -1){
             $bpmn = $this->businessProcessService->getBusinessProcessByProjectAndType($project_id, 'FBP')[0]['bpmn'];
         } else {
-            $bpmn = BpmnPattern::findOrFail($pattern_id)->pluck('bpmn')[0];
+            $bpmn = BpmnPattern::findOrFail($pattern_id)['bpmn'];
         }
         return view('projects/future_business_process')->with('project', $project)->with('bpmn', $bpmn);
     }

@@ -47,6 +47,7 @@
                                         <div id="1" class="mt-2">
                                             <input type="text" class="form-control contributor required"  id="input1" name="contributor[]" style="width:50%; display:inline-block">
                                             <span class="text-muted pl-3" style="display:none;"></span>
+                                            <button href="#" id="remove1" class="btn text-danger float-right"><i class="fas fa-minus-circle"></i></button>
                                         </div>
                                     </div>
                                 </td>
@@ -72,6 +73,8 @@
             var i = 1;
 
             complete(i);
+
+            buttonClick(1);
 
             $(addButton).click(function(e) {
                 e.preventDefault();

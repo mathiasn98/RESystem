@@ -3,6 +3,7 @@
     <div class="container pl-1 pr-1">
         <div>
             <h2 style="display: inline-block">Daftar Pattern</h2>
+            <a style="display: inline-block; float:right;" role="button" class="btn btn-danger" href="{{ route('project.future_business_process', [$project_id]) }}">Skip</a>
         </div>
         <table class="table table-hover">
             <thead class="thead-dark">

@@ -69,11 +69,7 @@
             while (j <= i) {
                 registered.push(contributors[j-1].username);
                 if (contributors[j-1].username != {!! json_encode(auth()->user()->username) !!}) {
-                    if (x == 1) {
-                        var fill = '<div id="' + x + '" class="mt-2"><input type="text" class="form-control contributor required" id="input' + x + '" name="contributor[]" style="width:50%; display:inline-block" value="' + contributors[j-1].username + '" required><span class="text-muted pl-3" style="display:inline-block">' + contributors[j-1].role + '</span></div>';
-                    } else {
-                        var fill = '<div id="' + x + '" class="mt-2"><input type="text" class="form-control contributor required" id="input' + x + '" name="contributor[]" style="width:50%; display:inline-block" value="' + contributors[j-1].username + '"><span class="text-muted pl-3" style="display:inline-block">' + contributors[j-1].role + '</span><button href="#" id="remove' + x + '" class="btn text-danger float-right"><i class="fas fa-minus-circle"></i></a></div>';
-                    }
+                    var fill = '<div id="' + x + '" class="mt-2"><input type="text" class="form-control contributor required" id="input' + x + '" name="contributor[]" style="width:50%; display:inline-block" value="' + contributors[j-1].username + '"><span class="text-muted pl-3" style="display:inline-block">' + contributors[j-1].role + '</span><button href="#" id="remove' + x + '" class="btn text-danger float-right"><i class="fas fa-minus-circle"></i></a></div>';
 
                     $(contributorDiv).append(fill);
 
