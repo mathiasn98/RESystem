@@ -48,6 +48,11 @@ Route::get('/project/{project_id}/find_pattern', [
     'uses' => 'ProjectController@findPattern'
 ])->middleware('auth');
 
+Route::get('/project/{project_id}/export', [
+    'as' => 'project.export',
+    'uses' => 'ProjectController@export'
+])->middleware('auth');
+
 Route::resource('project.business_goal', 'BusinessGoalController')->middleware('auth');
 Route::resource('project.requirements_definition', 'RequirementController')->middleware('auth');
 
@@ -74,6 +79,11 @@ Route::post('/project/save_business_process', [
 Route::post('/project/use_pattern', [
     'as' => 'project.use_pattern',
     'uses' => 'ProjectController@usePattern'
+])->middleware('auth');
+
+Route::post('/project/{project_id}/download', [
+    'as' => 'project.download',
+    'uses' => 'ProjectController@download'
 ])->middleware('auth');
 
 Route::get('/', function () {

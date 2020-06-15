@@ -110,7 +110,7 @@
             <li class="step inactive">
                 <div class="step-title waves-effect">Persetujuan</div>
                 <div class="step-content">
-                    <div>Kebutuhan dapat diunduh pada link <a>berikut</a></div>
+                    <div>Kebutuhan dapat diunduh pada link <a href="{{ route('project.export', [$project->id]) }}">berikut</a></div>
                         <div class="step-actions">
                             @if($lastProcessIndex >= 5)
                                 <button class="accept-req waves-effect waves-dark btn btn-success">SETUJU</button>
@@ -126,10 +126,13 @@
                 <div class="step-title waves-effect">Unduh Kebutuhan</div>
                 <div class="step-content">
                     @if($lastProcessIndex >= 6)
-                        <div>Kebutuhan dapat diunduh pada link <a>berikut</a></div>
+                        <div>Kebutuhan dapat diunduh pada tombol di bawah ini</div>
                     @else
                         <div class="text-danger">Selesaikan tahap sebelumnya terlebih dahulu</div>
                     @endif
+                    <div class="step-actions">
+                        <a class="btn btn-primary" href="{{ route('project.export', [$project->id]) }}">UNDUH</a>
+                    </div>
                 </div>
             </li>
         </ul>

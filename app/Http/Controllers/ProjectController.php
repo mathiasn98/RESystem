@@ -10,7 +10,10 @@ use App\Services\ContributorService;
 use App\Services\ProjectService;
 use App\Services\RequirementService;
 use App\User;
+//use Barryvdh\DomPDF\PDF;
+use PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -322,6 +325,31 @@ class ProjectController extends Controller
         } else {
             return abort(404);
         }
+    }
+
+    public function export($project_id)
+    {
+        $project = Project::findOrFail($project_id);
+        $contributors = $this->contributorService->getUser($project_id);
+        $business_goals = $this->businessGoalService->getBusinessGoalsByProject($project_id);
+        $requirements = $this->requirementService->getRequirementsByProject($project_id);
+        $bpmn_cbp = $this->businessProcessService->getBusinessProcessByProjectAndType($project_id, 'CBP');
+        $bpmn_fbp = $this->businessProcessService->getBusinessProcessByProjectAndType($project_id, 'FBP');
+
+
+        return view('projects/export')->with('project', $project)
+            ->with('business_goals', $business_goals)
+            ->with('contributors', $contributors)
+            ->with('requirements', $requirements)
+            ->with('bpmn_cbp', $bpmn_cbp)
+            ->with('bpmn_fbp', $bpmn_fbp);
+    }
+
+    public function download(Request $request)
+    {
+        $pdf = App::make('dompdf.wrapper');
+        $pdf = PDF::loadHTML($request->html);
+        return $pdf->stream();
     }
 
     public function usePattern(Request $request)

@@ -96,7 +96,7 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bpmn_js_lib_Modeler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bpmn-js/lib/Modeler */ "./node_modules/bpmn-js/lib/Modeler.js");
-/* harmony import */ var bpmn_js_lib_NavigatedViewer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bpmn-js/lib/NavigatedViewer */ "./node_modules/bpmn-js/lib/NavigatedViewer.js");
+/* harmony import */ var bpmn_js_lib_Viewer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bpmn-js/lib/Viewer */ "./node_modules/bpmn-js/lib/Viewer.js");
 /* harmony import */ var bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bpmn-js/lib/util/ModelUtil */ "./node_modules/bpmn-js/lib/util/ModelUtil.js");
 /* harmony import */ var _resources_diagram_bpmn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../resources/diagram.bpmn */ "./resources/diagram.bpmn");
 /* harmony import */ var _resources_diagram_bpmn__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_resources_diagram_bpmn__WEBPACK_IMPORTED_MODULE_3__);
@@ -152,7 +152,7 @@ const bpmnModeler = new bpmn_js_lib_Modeler__WEBPACK_IMPORTED_MODULE_0__["defaul
   }
 });
 
-console.log($('#bpmn-value').val());
+console.log($('#cbp-bpmn-value').val());
 
 // import XML
 bpmnModeler.importXML($('#bpmn-value').val(), (err) => {
@@ -279,9 +279,9 @@ function exportDiagram() {
 
 const tokenViewerSimulation = __webpack_require__(/*! bpmn-js-token-simulation/lib/viewer */ "./node_modules/bpmn-js-token-simulation/lib/viewer.js");
 
-if ($('#canvas')) {
-  var viewer = new bpmn_js_lib_NavigatedViewer__WEBPACK_IMPORTED_MODULE_1__["default"]({
-    container: '#canvas',
+if ($('#cbp-canvas') && $('#fbp-canvas')) {
+  var cbpViewer = new bpmn_js_lib_Viewer__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    container: '#cbp-canvas',
     additionalModules: [
       _custom_renderer__WEBPACK_IMPORTED_MODULE_6__["default"],
       tokenViewerSimulation
@@ -294,18 +294,62 @@ if ($('#canvas')) {
     }
   });
 
-  console.log(document.getElementById('bpmn-value'));
-  console.log($('#bpmn-value').val());
+  var fbpViewer = new bpmn_js_lib_Viewer__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    container: '#fbp-canvas',
+    additionalModules: [
+      _custom_renderer__WEBPACK_IMPORTED_MODULE_6__["default"],
+      tokenViewerSimulation
+    ],
+    moddleExtensions: {
+      qa: _resources_qa__WEBPACK_IMPORTED_MODULE_5__
+    },
+    keyboard: {
+      bindTo: document
+    }
+  });
 
-  viewer.importXML($('#bpmn-value').val(), function(err) {
+  // console.log(document.getElementById('cbp-bpmn-value'));
+  console.log($('#cbp-bpmn-value').val());
+  console.log($('#fbp-bpmn-value').val());
+
+  cbpViewer.importXML($('#cbp-bpmn-value').val(), function(err) {
     if (!err) {
-      viewer.get('canvas').zoom('fit-viewport');
+      cbpViewer.get('canvas').zoom('fit-viewport');
+      // $("#bpmn-svg-value").attr('value', $(".djs-container > svg").get(0))
+      console.log($(".djs-container > svg").get(0).outerHTML);
+      const canvas = $("#cbp-bpmn-canvas").get(0);
+      const ctx = canvas.getContext('2d');
+      let v = canvg.Canvg.fromString(ctx, $(".djs-container > svg").get(0).outerHTML) ;
+      v.start();
+      const canvasEdited = $("#cbp-bpmn-canvas").get(0);
+      var img = canvasEdited.toDataURL();
+      console.log(img);
+      $("#cbp-img-png").attr("src", img);
     } else {
       console.log('something went wrong:', err);
     }
   });
 
-  window.viewer = viewer;
+  fbpViewer.importXML($('#fbp-bpmn-value').val(), function(err) {
+    if (!err) {
+      fbpViewer.get('canvas').zoom('fit-viewport');
+      // $("#bpmn-svg-value").attr('value', $(".djs-container > svg").get(0))
+      console.log($(".djs-container > svg").get(0).outerHTML);
+      const canvas = $("#fbp-bpmn-canvas").get(0);
+      const ctx = canvas.getContext('2d');
+      let v = canvg.Canvg.fromString(ctx, $(".djs-container > svg").get(1).outerHTML) ;
+      v.start();
+      const canvasEdited = $("#fbp-bpmn-canvas").get(0);
+      var img = canvasEdited.toDataURL();
+      console.log(img);
+      $("#fbp-img-png").attr("src", img);
+    } else {
+      console.log('something went wrong:', err);
+    }
+  });
+  
+
+  window.viewer = cbpViewer;
 }
 
 /***/ }),
