@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="vendor/bpmn-js/assets/diagram-js.css" />
+  <link rel="stylesheet" href="vendor/bpmn-js/assets/bpmn-font/css/bpmn-embedded.css" />
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" href="css/normalize.css" />
+  <link rel="stylesheet" href="css/bpmn-js-token-simulation.css" />  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <title>Viewer</title>
+
+  <style>
+    #modeler-link {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: #000;
+      display: block;
+      padding: 6px;
+      font-size: 16px;
+      border-radius: 2px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      background-color: #FAFAFA;
+      text-decoration: none;
+    }
+
+    #modeler-link:hover {
+      color: #FFF;
+      background-color: #52B415;
+    }
+  </style>
+</head>
+<body>
+  <div id="nav-canvas"></div>
+
+  <input id="nav-bpmn-value"
+  style="visibility: hidden;"
+  value='<?xml version="1.0" encoding="UTF-8"?>
+  <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" targetNamespace="" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
+    <collaboration id="Collaboration_03omz1g">
+      <participant id="Participant_1c184f3" processRef="Process_040c6r6" />
+      <participant id="Participant_03wx06a" processRef="Process_1sbjefu" />
+      <participant id="Participant_1c44ud5" processRef="Process_01df7rf" />
+      <messageFlow id="MessageFlow_1s8lbcg" sourceRef="Task_0o4yabd" targetRef="Task_1r5e41x" />
+      <messageFlow id="MessageFlow_0i6gl0e" sourceRef="Task_1r5e41x" targetRef="Task_13b49d1" />
+    </collaboration>
+    <process id="Process_040c6r6">
+      <startEvent id="StartEvent_135i845">
+        <outgoing>SequenceFlow_0a66gna</outgoing>
+      </startEvent>
+      <task id="Task_0o4yabd" name="Halo">
+        <incoming>SequenceFlow_0a66gna</incoming>
+      </task>
+      <sequenceFlow id="SequenceFlow_0a66gna" sourceRef="StartEvent_135i845" targetRef="Task_0o4yabd" />
+    </process>
+    <process id="Process_1sbjefu">
+      <task id="Task_1r5e41x" name="Halo" />
+    </process>
+    <process id="Process_01df7rf">
+      <task id="Task_13b49d1" name="halo lagi" />
+    </process>
+    <bpmndi:BPMNDiagram id="sid-74620812-92c4-44e5-949c-aa47393d3830">
+      <bpmndi:BPMNPlane id="sid-cdcae759-2af7-4a6d-bd02-53f3352a731d" bpmnElement="Collaboration_03omz1g" stroke="#000" fill="#fff">
+        <bpmndi:BPMNShape id="Participant_1c184f3_di" bpmnElement="Participant_1c184f3" isHorizontal="true">
+          <omgdc:Bounds x="236" y="41" width="600" height="250" />
+        </bpmndi:BPMNShape>
+        <bpmndi:BPMNShape id="StartEvent_135i845_di" bpmnElement="StartEvent_135i845">
+          <omgdc:Bounds x="317" y="195" width="36" height="36" />
+        </bpmndi:BPMNShape>
+        <bpmndi:BPMNShape id="Task_0o4yabd_di" bpmnElement="Task_0o4yabd">
+          <omgdc:Bounds x="403" y="173" width="100" height="80" />
+        </bpmndi:BPMNShape>
+        <bpmndi:BPMNEdge id="SequenceFlow_0a66gna_di" bpmnElement="SequenceFlow_0a66gna">
+          <di:waypoint x="353" y="213" />
+          <di:waypoint x="403" y="213" />
+        </bpmndi:BPMNEdge>
+        <bpmndi:BPMNShape id="Participant_03wx06a_di" bpmnElement="Participant_03wx06a" isHorizontal="true">
+          <omgdc:Bounds x="236" y="326" width="600" height="250" />
+        </bpmndi:BPMNShape>
+        <bpmndi:BPMNShape id="Task_1r5e41x_di" bpmnElement="Task_1r5e41x">
+          <omgdc:Bounds x="426" y="375" width="100" height="80" />
+        </bpmndi:BPMNShape>
+        <bpmndi:BPMNEdge id="MessageFlow_1s8lbcg_di" bpmnElement="MessageFlow_1s8lbcg">
+          <di:waypoint x="453" y="253" />
+          <di:waypoint x="453" y="375" />
+        </bpmndi:BPMNEdge>
+        <bpmndi:BPMNShape id="Participant_1c44ud5_di" bpmnElement="Participant_1c44ud5" isHorizontal="true">
+          <omgdc:Bounds x="236" y="620" width="600" height="250" />
+        </bpmndi:BPMNShape>
+        <bpmndi:BPMNShape id="Task_13b49d1_di" bpmnElement="Task_13b49d1">
+          <omgdc:Bounds x="500" y="737" width="100" height="80" />
+        </bpmndi:BPMNShape>
+        <bpmndi:BPMNEdge id="MessageFlow_0i6gl0e_di" bpmnElement="MessageFlow_0i6gl0e">
+          <di:waypoint x="476" y="455" />
+          <di:waypoint x="476" y="596" />
+          <di:waypoint x="550" y="596" />
+          <di:waypoint x="550" y="737" />
+        </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+      <bpmndi:BPMNLabelStyle id="sid-e0502d32-f8d1-41cf-9c4a-cbb49fecf581">
+        <omgdc:Font name="Arial" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" />
+      </bpmndi:BPMNLabelStyle>
+      <bpmndi:BPMNLabelStyle id="sid-84cb49fd-2f7c-44fb-8950-83c3fa153d3b">
+        <omgdc:Font name="Arial" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" />
+      </bpmndi:BPMNLabelStyle>
+    </bpmndi:BPMNDiagram>
+  </definitions>'
+  >
+    Bpmn Value
+  </div>
+
+  <!-- <a id="modeler-link" href="./modeler.html">Modeler <i class="fa fa-sign-out"></i></a> -->
+  <script type="text/javascript" src="https://unpkg.com/canvg@3.0.4/lib/umd.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

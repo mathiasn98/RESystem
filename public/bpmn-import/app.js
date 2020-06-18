@@ -97,13 +97,15 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bpmn_js_lib_Modeler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bpmn-js/lib/Modeler */ "./node_modules/bpmn-js/lib/Modeler.js");
 /* harmony import */ var bpmn_js_lib_Viewer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bpmn-js/lib/Viewer */ "./node_modules/bpmn-js/lib/Viewer.js");
-/* harmony import */ var bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bpmn-js/lib/util/ModelUtil */ "./node_modules/bpmn-js/lib/util/ModelUtil.js");
-/* harmony import */ var _resources_diagram_bpmn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../resources/diagram.bpmn */ "./resources/diagram.bpmn");
-/* harmony import */ var _resources_diagram_bpmn__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_resources_diagram_bpmn__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _custom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./custom */ "./app/custom/index.js");
-/* harmony import */ var _resources_qa__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../resources/qa */ "./resources/qa.json");
-var _resources_qa__WEBPACK_IMPORTED_MODULE_5___namespace = /*#__PURE__*/__webpack_require__.t(/*! ../resources/qa */ "./resources/qa.json", 1);
-/* harmony import */ var _custom_renderer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./custom-renderer */ "./app/custom-renderer/index.js");
+/* harmony import */ var bpmn_js_lib_NavigatedViewer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bpmn-js/lib/NavigatedViewer */ "./node_modules/bpmn-js/lib/NavigatedViewer.js");
+/* harmony import */ var bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bpmn-js/lib/util/ModelUtil */ "./node_modules/bpmn-js/lib/util/ModelUtil.js");
+/* harmony import */ var _resources_diagram_bpmn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../resources/diagram.bpmn */ "./resources/diagram.bpmn");
+/* harmony import */ var _resources_diagram_bpmn__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_resources_diagram_bpmn__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _custom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./custom */ "./app/custom/index.js");
+/* harmony import */ var _resources_qa__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../resources/qa */ "./resources/qa.json");
+var _resources_qa__WEBPACK_IMPORTED_MODULE_6___namespace = /*#__PURE__*/__webpack_require__.t(/*! ../resources/qa */ "./resources/qa.json", 1);
+/* harmony import */ var _custom_renderer__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./custom-renderer */ "./app/custom-renderer/index.js");
+
 
 
 
@@ -144,11 +146,11 @@ const containerEl = document.getElementById('container-drawer'),
 const bpmnModeler = new bpmn_js_lib_Modeler__WEBPACK_IMPORTED_MODULE_0__["default"]({
   container: containerEl,
   additionalModules: [
-    _custom__WEBPACK_IMPORTED_MODULE_4__["default"],
+    _custom__WEBPACK_IMPORTED_MODULE_5__["default"],
     tokenSimulation
   ],
   moddleExtensions: {
-    qa: _resources_qa__WEBPACK_IMPORTED_MODULE_5__
+    qa: _resources_qa__WEBPACK_IMPORTED_MODULE_6__
   }
 });
 
@@ -195,7 +197,7 @@ bpmnModeler.importXML($('#bpmn-value').val(), (err) => {
       return;
     }
 
-    businessObject = Object(bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["getBusinessObject"])(element);
+    businessObject = Object(bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_3__["getBusinessObject"])(element);
   
     let { suitable } = businessObject;
     
@@ -279,15 +281,15 @@ function exportDiagram() {
 
 const tokenViewerSimulation = __webpack_require__(/*! bpmn-js-token-simulation/lib/viewer */ "./node_modules/bpmn-js-token-simulation/lib/viewer.js");
 
-if ($('#cbp-canvas') && $('#fbp-canvas')) {
+if ($('#cbp-canvas').length !=0 && $('#fbp-canvas').length != 0) {
   var cbpViewer = new bpmn_js_lib_Viewer__WEBPACK_IMPORTED_MODULE_1__["default"]({
     container: '#cbp-canvas',
     additionalModules: [
-      _custom_renderer__WEBPACK_IMPORTED_MODULE_6__["default"],
+      _custom_renderer__WEBPACK_IMPORTED_MODULE_7__["default"],
       tokenViewerSimulation
     ],
     moddleExtensions: {
-      qa: _resources_qa__WEBPACK_IMPORTED_MODULE_5__
+      qa: _resources_qa__WEBPACK_IMPORTED_MODULE_6__
     },
     keyboard: {
       bindTo: document
@@ -297,11 +299,11 @@ if ($('#cbp-canvas') && $('#fbp-canvas')) {
   var fbpViewer = new bpmn_js_lib_Viewer__WEBPACK_IMPORTED_MODULE_1__["default"]({
     container: '#fbp-canvas',
     additionalModules: [
-      _custom_renderer__WEBPACK_IMPORTED_MODULE_6__["default"],
+      _custom_renderer__WEBPACK_IMPORTED_MODULE_7__["default"],
       tokenViewerSimulation
     ],
     moddleExtensions: {
-      qa: _resources_qa__WEBPACK_IMPORTED_MODULE_5__
+      qa: _resources_qa__WEBPACK_IMPORTED_MODULE_6__
     },
     keyboard: {
       bindTo: document
@@ -350,6 +352,32 @@ if ($('#cbp-canvas') && $('#fbp-canvas')) {
   
 
   window.viewer = cbpViewer;
+}
+
+if ($('#nav-canvas').length != 0) {
+  var navViewer = new bpmn_js_lib_NavigatedViewer__WEBPACK_IMPORTED_MODULE_2__["default"]({
+    container: '#nav-canvas',
+    additionalModules: [
+      _custom_renderer__WEBPACK_IMPORTED_MODULE_7__["default"],
+      tokenViewerSimulation
+    ],
+    moddleExtensions: {
+      qa: _resources_qa__WEBPACK_IMPORTED_MODULE_6__
+    },
+    keyboard: {
+      bindTo: document
+    }
+  });
+
+  navViewer.importXML($('#nav-bpmn-value').val(), function(err) {
+    if (!err) {
+      navViewer.get('canvas').zoom('fit-viewport');
+    } else {
+      console.log('something went wrong:', err);
+    }
+  });
+
+  window.viewer = navViewer;
 }
 
 /***/ }),

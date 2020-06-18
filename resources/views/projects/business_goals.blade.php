@@ -6,8 +6,12 @@
             <div class="form-group">
                 <div>
                     <h2 style="display: inline-block">Business Goals</h2>
-                    <a class="btn btn-danger float-right ml-2" href="{{ URL::previous() }}" style="display:inline-block">Batal</a>
-                    <button type="submit" id="save" class="btn btn-success float-right" style="display:inline-block">Simpan</button>
+                    @if (Auth::user()->role == 'Software Developer')
+                        <a class="btn btn-primary float-right ml-2" href="{{ URL::previous() }}" style="display:inline-block">Kembali</a>
+                    @else
+                        <a class="btn btn-danger float-right ml-2" href="{{ URL::previous() }}" style="display:inline-block">Batal</a>
+                        <button type="submit" id="save" class="btn btn-success float-right" style="display:inline-block">Simpan</button>
+                    @endif
                     <div>Tuliskan tujuan bisnis dari proyek yang Anda buat</div>
                     <input name="project_id" class="form-control" type="hidden" value="{{ $project->id }}">
                 </div>
@@ -18,9 +22,12 @@
 {{--                    <input type="text" class="form-control business-goals required ml-2 mt-2" id="input1" name="business_goals[]" style="width: 94%; display: inline-block" value="">--}}
 {{--                </div>--}}
             </div>
-            <button class="btn text-primary mt-2" id="addBusinessGoals" style="display: block; margin-left:auto; margin-right: auto">
-                <i class="fas fa-plus-circle fa-2x"></i>
-            </button>
+            @if(Auth::user()->role != 'Software Developer')
+                <button class="btn text-primary mt-2" id="addBusinessGoals" style="display: block; margin-left:auto; margin-right: auto">
+                    <i class="fas fa-plus-circle fa-2x"></i>
+                </button>
+            @endif
+
         </form>
 
     </div>
@@ -45,13 +52,19 @@
                     '<input type="text" class="form-control business-goals required ml-2 mt-2" id="input1" name="business_goals[]" style="width: 94%; display: inline-block" value="">' +
                     '</div>';
             } else {
-                businessGoals.forEach(function (businessGoal, i) {
-                    if (i === 0) {
+                if ('{{ Auth::user()->role }}' == 'Software Developer') {
+                    businessGoals.forEach(function (businessGoal, i) {
                         fill += '<div id="' + i + '" class="form-group mt-2"><i class="fas fa-circle"></i><input type="text" value="' + businessGoal + '" class="form-control business-goals required ml-2 mt-2" id="input' + i + '" name="business_goals[]" style="width:94%; display:inline-block"><span class="text-muted pl-3" style="display:none"></span></div>';
-                    } else {
-                        fill += '<div id="' + i + '" class="form-group mt-2"><i class="fas fa-circle"></i><input type="text" value="' + businessGoal + '" class="form-control business-goals required ml-2 mt-2" id="input' + i + '" name="business_goals[]" style="width:94%; display:inline-block"><span class="text-muted pl-3" style="display:none"></span><button href="#" id="remove' + i + '" class="btn text-danger float-right mt-2"><i class="fas fa-minus-circle"></i></button></div>'
-                    }
-                })
+                    })
+                } else {
+                    businessGoals.forEach(function (businessGoal, i) {
+                        if (i === 0) {
+                            fill += '<div id="' + i + '" class="form-group mt-2"><i class="fas fa-circle"></i><input type="text" value="' + businessGoal + '" class="form-control business-goals required ml-2 mt-2" id="input' + i + '" name="business_goals[]" style="width:94%; display:inline-block"><span class="text-muted pl-3" style="display:none"></span></div>';
+                        } else {
+                            fill += '<div id="' + i + '" class="form-group mt-2"><i class="fas fa-circle"></i><input type="text" value="' + businessGoal + '" class="form-control business-goals required ml-2 mt-2" id="input' + i + '" name="business_goals[]" style="width:94%; display:inline-block"><span class="text-muted pl-3" style="display:none"></span><button href="#" id="remove' + i + '" class="btn text-danger float-right mt-2"><i class="fas fa-minus-circle"></i></button></div>'
+                        }
+                    })
+                }
             }
 
 

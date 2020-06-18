@@ -5,8 +5,12 @@
             @csrf
             <div class="form-group">
                 <h2 style="display: inline-block">Current Business Process</h2>
-                <a class="btn btn-danger float-right ml-2" href="{{ URL::previous() }}" style="display: inline-block">Batal</a>
-                <button id="save-button" type="submit" class="btn btn-success float-right" style="display: inline-block">Simpan</button>
+                @if (Auth::user()->role == 'Software Developer')
+                    <a class="btn btn-primary float-right ml-2" href="{{ URL::previous() }}" style="display:inline-block">Kembali</a>
+                @else
+                    <a class="btn btn-danger float-right ml-2" href="{{ URL::previous() }}" style="display: inline-block">Batal</a>
+                    <button id="save-button" type="submit" class="btn btn-success float-right" style="display: inline-block">Simpan</button>
+                @endif
                 <div>Gambarkan Proses Bisnis yang telah dijalankan di perusahaan</div>
             </div>
             <input id="this-noise" type="hidden" />
@@ -18,7 +22,12 @@
 
         </form>
 
-        <div id="container-drawer">
+        @if (Auth::user()->role == 'Software Developer')
+            <input id="nav-bpmn-value" style="visibility: hidden" value="{{ $bpmn }}">
+            <div id="nav-canvas" style="width: 1200px; height: 600px"></div>
+        @else
+            <div id="container-drawer">
+        @endif
 
         </div>
     </div>

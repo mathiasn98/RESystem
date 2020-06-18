@@ -19,6 +19,12 @@ html, body {
   border: dotted 2px;
 }
 
+#nav-canvas {
+  width: 1200px;
+  height: 600px;
+  border: dotted 2px;
+}
+
 .bjs-container {
   border: solid 4px transparent;
   box-sizing: border-box;

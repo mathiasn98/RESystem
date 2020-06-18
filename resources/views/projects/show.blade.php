@@ -14,6 +14,12 @@
             </div>
             <div class="text-muted">
                 <small>
+{{--                    @if(Auth::user()->role == 'Software Developer')--}}
+{{--                        <div>Ini software dev</div>--}}
+{{--                    @else--}}
+{{--                        <div>Ini business owner</div>--}}
+{{--                    @endif--}}
+
                     <span>Dibuat pada <b>{{ $project->created_at }}</b> oleh <b>{{ $project->created_by }}</b></span>
                     <p>Terakhir diubah pada <b>{{ $project->updated_at }}</b> oleh <b>{{ $project->updated_by }}</b></p>
                 </small>
