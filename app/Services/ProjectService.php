@@ -13,4 +13,10 @@ class ProjectService
         return $affected;
     }
 
+    public function updateStatus($project_id, $status)
+    {
+        $affected = Project::where('id', $project_id)->update(['status' => $status]);
+        return $affected;
+    }
+
 }

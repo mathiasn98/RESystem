@@ -66,9 +66,19 @@ Route::post('/project/reject', [
     'uses' => 'ProjectController@rejectRequirements'
 ])->middleware('auth');
 
+Route::post('/project/reset', [
+    'as' => 'project.reset',
+    'uses' => 'ProjectController@resetRequirements'
+])->middleware('auth');
+
 Route::post('/project/accept', [
     'as' => 'project.accept',
     'uses' => 'ProjectController@acceptRequirements'
+])->middleware('auth');
+
+Route::post('/project/submit', [
+    'as' => 'project.submit',
+    'uses' => 'ProjectController@changeStatus'
 ])->middleware('auth');
 
 Route::post('/project/save_business_process', [

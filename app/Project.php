@@ -9,7 +9,7 @@ class Project extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'name', 'description', 'created_by', 'updated_by', 'last_process'
+        'name', 'description', 'created_by', 'updated_by', 'last_process', 'status'
     ];
 
     public function contributor()

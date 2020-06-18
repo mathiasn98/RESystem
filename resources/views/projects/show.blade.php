@@ -117,15 +117,44 @@
                 <div class="step-title waves-effect">Persetujuan</div>
                 <div class="step-content">
                     <div>Kebutuhan dapat diunduh pada link <a href="{{ route('project.export', [$project->id]) }}">berikut</a></div>
-                        <div class="step-actions">
-                            @if($lastProcessIndex >= 5)
-                                <button class="accept-req waves-effect waves-dark btn btn-success">SETUJU</button>
-                                <button class="reject-req btn btn-danger ml-2">TOLAK</button>
+                    @if($project->status == 'DitolakCBP')
+                        @if(Auth::user()->role == 'Business Owner')
+                            <div class="alert alert-danger">Kebutuhan ditolak oleh Software Developer dengan meminta pengulangan dari Pendefinsian Kebutuhan</div>
+                        @else
+                            <div class="alert alert-danger">Anda telah menolak kebutuhan dengan meminta pengulangan dari Pendefinsian Kebutuhan</div>
+                        @endif
+                    @elseif($project->status == 'DitolakBG')
+                        @if(Auth::user()->role == 'Business Owner')
+                            <div class="alert alert-danger">Kebutuhan ditolak oleh Software Developer dengan meminta pengulangan dari Business Goals</div>
+                        @else
+                            <div class="alert alert-danger">Anda telah menolak kebutuhan dengan meminta pengulangan dari Business Goals</div>
+                        @endif
+                    @endif
+                    <div class="step-actions">
+                        @if($lastProcessIndex >= 5)
+                            @if(Auth::user()->role == 'Software Developer')
+                                @if($project->status == 'Diajukan')
+                                    <button class="accept-req waves-effect waves-dark btn btn-success">SETUJU</button>
+                                    <button class="reject-req btn btn-danger ml-2">TOLAK</button>
+                                @else
+                                    <div>Silakan tunggu hingga diajukan oleh business owner</div>
+                                @endif
                             @else
-                                <button class="btn btn-success trigger-alert" href="#">SETUJU</button>
-                                <button class="btn btn-danger trigger-alert" href="#">TOLAK</button>
+                                @if($project->status == 'Aktif')
+                                    <button class="submit-req waves-effect waves-dark btn btn-primary" href="{{ route('project.submit', [$project->id]) }}">AJUKAN</button>
+                                    <button class="reset-req btn btn-danger ml-2">ULANGI</button>
+                                @elseif($project->status == 'Diajukan')
+                                    <div>Silakan tunggu persetujuan dari software developer</div>
+                                @else
+                                    <button class="submit-req waves-effect waves-dark btn btn-primary" href="{{ route('project.submit', [$project->id]) }}">AJUKAN</button>
+                                    <button class="reset-req btn btn-danger ml-2">ULANGI</button>
+                                @endif
                             @endif
-                        </div>
+                        @else
+                            <button class="btn btn-success trigger-alert" href="#">SETUJU</button>
+                            <button class="btn btn-danger trigger-alert" href="#">TOLAK</button>
+                        @endif
+                    </div>
                 </div>
             </li>
             <li class="step inactive">
@@ -142,6 +171,14 @@
                 </div>
             </li>
         </ul>
+        <form id="resetProcess" method="POST" action="{{ route('project.reset') }}" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <input id="project_id" name="project_id" class="form-control" type="hidden" value="{{ $project->id }}">
+                <input id="reset_from" name="reset_from" class="form-control" type="hidden" value=""/>
+            </div>
+        </form>
+
         <form id="rejectProcess" method="POST" action="{{ route('project.reject') }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
@@ -151,6 +188,13 @@
         </form>
 
         <form id="acceptProcess" method="POST" action="{{ route('project.accept') }}" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <input id="project_id" name="project_id" class="form-control" type="hidden" value="{{ $project->id }}">
+            </div>
+        </form>
+
+        <form id="submitProject" method="POST" action="{{ route('project.submit') }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <input id="project_id" name="project_id" class="form-control" type="hidden" value="{{ $project->id }}">
@@ -187,10 +231,10 @@
             }
         });
 
-        $('.reject-req').click(function (e) {
+        $('.reset-req').click(function (e) {
             e.preventDefault();
             $.confirm({
-                title: 'Tolak Kebutuhan',
+                title: 'Ulangi Pendefinisan Kebutuhan',
                 content: 'Ulangi dari tahap?',
                 buttons: {
                     fromBusinessGoals: {
@@ -198,8 +242,8 @@
                         btnClass: 'btn-red',
                         keys: ['enter', 'shift'],
                         action: function(){
-                            $('#reject_from').val('BUSINESS_GOALS');
-                            $('#rejectProcess').submit();
+                            $('#reset_from').val('BUSINESS_GOALS');
+                            $('#resetProcess').submit();
                         }
                     },
                     fromRequirementsDefinition: {
@@ -207,8 +251,50 @@
                         btnClass: 'btn-blue',
                         keys: ['enter', 'shift'],
                         action: function(){
-                            $('#reject_from').val('REQ_DEF');
+                            $('#reset_from').val('REQ_DEF');
+                            $('#resetProcess').submit();
+                        }
+                    },
+                    cancel: {
+                        text: 'Batal',
+                        action: function(){
+
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.reject-req').click(function (e) {
+            e.preventDefault();
+            $.confirm({
+                title: 'Tolak Kebutuhan',
+                content: 'Ulang dari tahap?',
+                buttons: {
+                    fromBusinessGoals: {
+                        text: 'Business Goals',
+                        btnClass: 'btn-red',
+                        keys: ['enter', 'shift'],
+                        action: function(){
+                            $('#reject_from').val('DitolakBG');
                             $('#rejectProcess').submit();
+                            $.alert('Penolakan disampaikan ke Business Owner');
+                        }
+                    },
+                    fromRequirementsDefinition: {
+                        text: 'Pendefinisian Kebutuhan',
+                        btnClass: 'btn-blue',
+                        keys: ['enter', 'shift'],
+                        action: function(){
+                            $('#reject_from').val('DitolakCBP');
+                            $('#rejectProcess').submit();
+                            $.alert('Penolakan disampaikan ke Business Owner');
+                        }
+                    },
+                    cancel: {
+                        text: 'Batal',
+                        action: function(){
+
                         }
                     }
                 }
@@ -233,6 +319,27 @@
                         btnClass: 'btn-danger',
                         action: function(){
 
+                        }
+                    }
+                }
+            })
+        });
+
+        $('.submit-req').click(function (e) {
+            e.preventDefault();
+            $.confirm({
+                title: 'Pengajuan',
+                content: 'Anda yakin mengajukan?',
+                buttons: {
+                    confirm: {
+                        text: 'OK',
+                        action: function(){
+                            $('#submitProject').submit();
+                        }
+                    },
+                    cancel: {
+                        text: 'cancel',
+                        action: function(){
                         }
                     }
                 }

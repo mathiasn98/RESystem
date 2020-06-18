@@ -269,8 +269,18 @@ class ProjectController extends Controller
 
     public function rejectRequirements(Request $request)
     {
-        if ($this->projectService->updateLastProcess($request->project_id, $request->reject_from)){
-            if ($request->reject_from == 'BUSINESS_GOALS'){
+        if ($this->projectService->updateStatus($request->project_id, $request->reject_from)){
+            return redirect()->to('/project/'.$request->project_id);
+        } else {
+            return abort(404);
+        }
+    }
+
+    public function resetRequirements(Request $request)
+    {
+        if ($this->projectService->updateLastProcess($request->project_id, $request->reset_from)){
+            $this->projectService->updateStatus($request->project_id, 'Aktif');
+            if ($request->reset_from == 'BUSINESS_GOALS'){
                 return redirect()->to('/project/'.$request->project_id.'/business_goals');
             } else {
                 return redirect()->to('/project/'.$request->project_id.'/requirements_definition');
@@ -355,5 +365,11 @@ class ProjectController extends Controller
     public function usePattern(Request $request)
     {
         return $this->getFutureBusinessProcess($request->project_id, $request->pattern_id);
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $this->projectService->updateStatus($request->project_id, 'Diajukan');
+        return redirect()->to('/project/'.$request->project_id);
     }
 }
