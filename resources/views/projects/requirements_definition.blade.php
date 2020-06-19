@@ -9,10 +9,18 @@
                     <a class="btn btn-danger float-right ml-2" href="{{ URL::previous() }}" style="display:inline-block">Batal</a>
                     <button type="submit" id="save" class="btn btn-success float-right" style="display:inline-block">Simpan</button>
                     <div>Definisikan kebutuhan fungsional dan non-fungsional dari proyek ini</div>
+                    <div>Kebutuhan dibuat berdasarkan Future Business Process Diagram</div>
                     <input name="project_id" class="form-control" type="hidden" value="{{ $project->id }}">
                 </div>
             </div>
-            <div class="row">
+            <div style="background-color: lightcyan">
+                <h5>Future Business Process Diagram</h5>
+                <small>Geser pada diagram untuk mengubah posisi</small>
+                <input id="nav-bpmn-value" style="visibility: hidden" value="{{ $bpmn }}">
+                <div id="nav-canvas" style="width: 1132px; height: 400px; border-style: dotted; border-width: 2px"></div>
+
+            </div>
+            <div class="row mt-4">
             <div class="col">
                 <h4>Kebutuhan Fungsional</h4>
                     <div id="inputFunctionalRequirementsDiv" class="mt-4">
@@ -180,4 +188,14 @@
             return check;
         }
     </script>
+    <script type="text/javascript" src="/bpmn-import/app.js"></script>
+@endpush
+
+@push('head_styles')
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/bpmn-import/vendor/bpmn-js/assets/diagram-js.css" />
+    <link rel="stylesheet" href="/bpmn-import/vendor/bpmn-js/assets/bpmn-font/css/bpmn-embedded.css" />
+    <link rel="stylesheet" href="/bpmn-import/css/app.css" />
+    {{--    <link rel="stylesheet" href="/bpmn-import/css/normalize.css" />--}}
+    <link rel="stylesheet" href="/bpmn-import/css/bpmn-js-token-simulation.css" />
 @endpush

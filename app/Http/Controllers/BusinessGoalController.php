@@ -50,6 +50,7 @@ class BusinessGoalController extends Controller
         $projectId = $request->input('project_id');
         $this->businessGoalService->updateBusinessGoals($projectId, $businessGoals);
         $this->projectService->updateLastProcess($projectId, 'CBP');
+        $this->projectService->updateStatus($projectId, 'Aktif');
 
         return redirect()->route('project.show', [$projectId]);
     }

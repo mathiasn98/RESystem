@@ -53,6 +53,11 @@ Route::get('/project/{project_id}/export', [
     'uses' => 'ProjectController@export'
 ])->middleware('auth');
 
+Route::get('project/{project_id}/skip_pattern', [
+    'as' => 'project.skip_pattern',
+    'uses' => 'ProjectController@skipPattern'
+])->middleware('auth');
+
 Route::resource('project.business_goal', 'BusinessGoalController')->middleware('auth');
 Route::resource('project.requirements_definition', 'RequirementController')->middleware('auth');
 

@@ -264,7 +264,9 @@ class ProjectController extends Controller
     public function requirementsDefintion($project_id)
     {
         $project = Project::findOrFail($project_id);
-        return view('projects/requirements_definition')->with('project', $project)->with('initRequirements', $this->requirementService->getRequirementsByProject($project_id));
+        $bpmn = $this->businessProcessService->getBusinessProcessByProjectAndType($project_id, 'FBP')[0]['bpmn'];
+        $this->projectService->updateStatus($project_id, 'Aktif');
+        return view('projects/requirements_definition')->with('project', $project)->with('initRequirements', $this->requirementService->getRequirementsByProject($project_id))->with('bpmn', $bpmn);
     }
 
     public function rejectRequirements(Request $request)
@@ -331,6 +333,7 @@ class ProjectController extends Controller
         if ($this->businessProcessService->updateBusinessProcess($request->project_id, $request->type, $request->bpmn)){
             $nextLastProcess = ($request->type == 'CBP' ? 'FIND_PATTERN' : 'REQ_DEF');
             $this->projectService->updateLastProcess($request->project_id, $nextLastProcess);
+            $this->projectService->updateStatus($request->project_id, 'Aktif');
             return redirect()->to('/project/'.$request->project_id);
         } else {
             return abort(404);
@@ -365,6 +368,12 @@ class ProjectController extends Controller
     public function usePattern(Request $request)
     {
         return $this->getFutureBusinessProcess($request->project_id, $request->pattern_id);
+    }
+
+    public function skipPattern(Request $request)
+    {
+        $this->projectService->updateLastProcess($request->project_id, 'FBP');
+        return redirect()->to('/project/'.$request->project_id);
     }
 
     public function changeStatus(Request $request)

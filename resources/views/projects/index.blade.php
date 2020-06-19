@@ -4,7 +4,9 @@
         @if (count($projects) > 0)
             <div>
                 <h2 style="display: inline-block">Daftar Proyek</h2>
-                <a style="display: inline-block; float:right;" class="btn btn-success" href="{{ route('project.create') }}" role="button">Tambah Proyek</a>
+                @if(Auth::user()->role == 'Business Owner')
+                    <a style="display: inline-block; float:right;" class="btn btn-success" href="{{ route('project.create') }}" role="button">Tambah Proyek</a>
+                @endif
             </div>
             <table class="table table-hover">
                 <thead class="thead-dark">
@@ -48,7 +50,9 @@
             </table>
         @else
             <h2 style="display: inline-block">Anda tidak memiliki proyek</h2>
-            <a style="display: inline-block; float:right;" class="btn btn-success" href="{{ route('project.create') }}" role="button">Tambah Proyek</a>
+            @if(Auth::user()->role == 'Business Owner')
+                <a style="display: inline-block; float:right;" class="btn btn-success" href="{{ route('project.create') }}" role="button">Tambah Proyek</a>
+            @endif
         @endif
 
     </div>
