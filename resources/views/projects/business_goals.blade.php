@@ -5,12 +5,14 @@
             @csrf
             <div class="form-group">
                 <div>
-                    <h2 style="display: inline-block">Business Goals</h2>
+                    <h2 style="display: inline-block">Tujuan Bisnis Proyek</h2>
                     @if (Auth::user()->role == 'Software Developer')
                         <a class="btn btn-primary float-right ml-2" href="{{ URL::previous() }}" style="display:inline-block">Kembali</a>
                     @else
                         <a class="btn btn-danger float-right ml-2" href="{{ URL::previous() }}" style="display:inline-block">Batal</a>
-                        <button type="submit" id="save" class="btn btn-success float-right" style="display:inline-block">Simpan</button>
+                        @if($project->last_process == 'BUSINESS_GOALS')
+                            <button type="submit" id="save" class="btn btn-success float-right" style="display:inline-block">Simpan</button>
+                        @endif
                     @endif
                     <div>Tuliskan tujuan bisnis dari proyek yang Anda buat</div>
                     <input name="project_id" class="form-control" type="hidden" value="{{ $project->id }}">

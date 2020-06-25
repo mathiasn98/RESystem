@@ -33,6 +33,11 @@ Route::get('/project/{project_id}/current_business_process', [
     'uses' => 'ProjectController@getCurrentBusinessProcess'
 ])->middleware('auth');
 
+Route::get('/project/{project_id}/future_business_process/{pattern_id}', [
+    'as' => 'project.future_business_process',
+    'uses' => 'ProjectController@getFutureBusinessProcess'
+])->middleware('auth');
+
 Route::get('/project/{project_id}/future_business_process', [
     'as' => 'project.future_business_process',
     'uses' => 'ProjectController@getFutureBusinessProcess'

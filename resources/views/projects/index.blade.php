@@ -11,8 +11,8 @@
             <table class="table table-hover">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col" style="width: 30%">Nama Proyek</th>
-                        <th scope="col" style="width: 20%">Tahap</th>
+                        <th scope="col" style="width: 25%">Nama Proyek</th>
+                        <th scope="col" style="width: 25%">Tahap</th>
                         <th scope="col" style="width: 20%">Terakhir Diubah</th>
                         <th style="width:5%"></th>
                         <th style="width:5%"></th>
@@ -22,10 +22,10 @@
                 <tbody>
                 @foreach($projects as $project)
                     <tr>
-                        <td style="width: 30%">
+                        <td style="width: 25%">
                             <a class="btn btn-link" href="{{ route('project.show', [$project->id]) }}">{{ $project->name }}</a>
                         </td>
-                        <td style="width: 20%">
+                        <td style="width: 25%">
                             {{ $project->last_process }}
                         </td>
                         <td style="width: 20%">

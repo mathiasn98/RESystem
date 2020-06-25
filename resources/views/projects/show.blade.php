@@ -42,11 +42,12 @@
     <div class="container pl-1 pr-1">
         <ul class="stepper">
             <li class="step active">
-                <div class="step-title waves-effect">Business Goals</div>
+                <div class="step-title waves-effect">Pendefinisian Tujuan Bisnis Proyek</div>
                 <div class="step-content">
-                    <div>Apa tujuan Anda melalui proyek ini?</div>
-                    <div>Contoh: <b>Mengurangi waktu antrean</b></div>
-
+                    <div>Definisikan capaian yang diharapkan dalam proyek ini</div>
+                    <div>Contoh:</div>
+                    <ul><b>1.</b> Meningkatkan kepuasan konsumen</ul>
+                    <ul><b>2.</b> Mendokumentasikan transaksi penjualan</ul>
                     <div class="step-actions">
                         <a class="btn btn-primary" href="{{ route('project.business_goals', [$project->id]) }}">LIHAT</a>
 {{--                        <button class="waves-effect waves-dark btn next-step btn-primary">CONTINUE</button>--}}
@@ -54,9 +55,9 @@
                 </div>
             </li>
             <li class="step inactive">
-                <div class="step-title waves-effect">Current Business Process</div>
+                <div class="step-title waves-effect">Penggambaran Proses Bisnis Saat Ini</div>
                 <div class="step-content">
-                    <div>Unggah atau gambarkan proses bisnismu saat ini</div>
+                    <div>Gambarkan proses bisnis yang telah berjalan di perusahaan</div>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
                         @if($lastProcessIndex >= 1)
@@ -69,9 +70,9 @@
                 </div>
             </li>
             <li class="step inactive">
-                <div class="step-title waves-effect">Find Pattern</div>
+                <div class="step-title waves-effect">Gunakan Template</div>
                 <div class="step-content">
-                    <div>Cari pola untuk Proses Bisnismu</div>
+                    <div>Pilih dan gunakan template proses bisnis yang telah kami sediakan</div>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
                         @if($lastProcessIndex >=2)
@@ -84,9 +85,9 @@
                 </div>
             </li>
             <li class="step inactive">
-                <div class="step-title waves-effect">Future Business Process</div>
+                <div class="step-title waves-effect">Penggambaran Proses Bisnis Proyek</div>
                 <div class="step-content">
-                    <div>Definisikan proses bisnis dari sistem yang ingin Anda buat</div>
+                    <div>Gambarkan proses bisnis dari sistem yang ingin Anda buat</div>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
                         @if($lastProcessIndex >= 3)
@@ -101,7 +102,7 @@
             <li class="step inactive">
                 <div class="step-title waves-effect">Pendefinisian Kebutuhan</div>
                 <div class="step-content">
-                    <div>Definisikan kebutuhan fungsional dan non-fungsional dari proyek Anda</div>
+                    <div>Definisikan <b>kebutuhan fungsional</b> dan <b>kebutuhan non-fungsional</b> untuk perangkat lunak pada proyek ini</div>
                     <div class="step-actions">
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
                         @if($lastProcessIndex >= 4)
@@ -114,9 +115,10 @@
                 </div>
             </li>
             <li class="step inactive">
-                <div class="step-title waves-effect">Persetujuan</div>
+                <div class="step-title waves-effect">Persetujuan Kebutuhan Proyek</div>
                 <div class="step-content">
-                    <div>Kebutuhan dapat diunduh pada link <a href="{{ route('project.export', [$project->id]) }}">berikut</a></div>
+                    @if($lastProcessIndex >= 5)
+                        <div>Kebutuhan dapat diunduh pada link <a href="{{ route('project.export', [$project->id]) }}" target="_blank">berikut</a></div>
                     @if($project->status == 'DitolakCBP')
                         @if(Auth::user()->role == 'Business Owner')
                             <div class="alert alert-danger">Kebutuhan ditolak oleh Software Developer dengan meminta pengulangan dari Pendefinsian Kebutuhan</div>
@@ -129,44 +131,47 @@
                         @else
                             <div class="alert alert-danger">Anda telah menolak kebutuhan dengan meminta pengulangan dari Business Goals</div>
                         @endif
+                    @else
+                            @if(Auth::user()->role == 'Business Owner')
+                                <div>Ajukan persetujuan kebutuhan kepada Software Developer atau ulangi tahapan proyek</div>
+                            @else
+                                <div>Setujui atau tolak permintaan persetujuan proyek</div>
+                            @endif
                     @endif
-                    <div class="step-actions">
-                        @if($lastProcessIndex >= 5)
+                        <div class="step-actions">
                             @if(Auth::user()->role == 'Software Developer')
                                 @if($project->status == 'Diajukan')
                                     <button class="accept-req waves-effect waves-dark btn btn-success">SETUJU</button>
                                     <button class="reject-req btn btn-danger ml-2">TOLAK</button>
-                                @else
+                                @elseif($project->status == 'Disetujui')
                                     <div>Silakan tunggu hingga diajukan oleh business owner</div>
                                 @endif
                             @else
-                                @if($project->status == 'Aktif')
-                                    <button class="submit-req waves-effect waves-dark btn btn-primary" href="{{ route('project.submit', [$project->id]) }}">AJUKAN</button>
-                                    <button class="reset-req btn btn-danger ml-2">ULANGI</button>
-                                @elseif($project->status == 'Diajukan')
-                                    <div>Silakan tunggu persetujuan dari software developer</div>
+                                @if($project->status == 'Diajukan')
+                                    <div class="alert alert-primary" role="alert">Silakan tunggu persetujuan dari software developer</div>
+                                @elseif($project->status == 'Disetujui')
+                                    <div class="alert alert-success" role="alert">Kebutuhan telah disetujui</div>
                                 @else
                                     <button class="submit-req waves-effect waves-dark btn btn-primary" href="{{ route('project.submit', [$project->id]) }}">AJUKAN</button>
                                     <button class="reset-req btn btn-danger ml-2">ULANGI</button>
                                 @endif
                             @endif
-                        @else
-                            <button class="btn btn-success trigger-alert" href="#">SETUJU</button>
-                            <button class="btn btn-danger trigger-alert" href="#">TOLAK</button>
-                        @endif
-                    </div>
+                        </div>
+                    @else
+                        <div class="text-danger">Selesaikan tahap sebelumnya terlebih dahulu</div>
+                    @endif
                 </div>
             </li>
             <li class="step inactive">
                 <div class="step-title waves-effect">Unduh Kebutuhan</div>
                 <div class="step-content">
-                    @if($lastProcessIndex >= 6)
-                        <div>Kebutuhan dapat diunduh pada tombol di bawah ini</div>
-                    @else
-                        <div class="text-danger">Selesaikan tahap sebelumnya terlebih dahulu</div>
-                    @endif
+                    <div>Kebutuhan dapat diunduh pada tombol di bawah ini</div>
                     <div class="step-actions">
-                        <a class="btn btn-primary" href="{{ route('project.export', [$project->id]) }}">UNDUH</a>
+                        @if($lastProcessIndex >= 6)
+                            <a class="btn btn-primary" href="{{ route('project.export', [$project->id]) }}" target="_blank">UNDUH</a>
+                        @else
+                            <button class="btn btn-primary trigger-alert">UNDUH</button>
+                        @endif
                     </div>
                 </div>
             </li>
@@ -234,11 +239,11 @@
         $('.reset-req').click(function (e) {
             e.preventDefault();
             $.confirm({
-                title: 'Ulangi Pendefinisan Kebutuhan',
-                content: 'Ulangi dari tahap?',
+                title: 'Ulangi Proyek',
+                content: 'Ulangi dari?',
                 buttons: {
                     fromBusinessGoals: {
-                        text: 'Business Goals',
+                        text: 'Pendefinisian Tujuan Bisnis Proyek',
                         btnClass: 'btn-red',
                         keys: ['enter', 'shift'],
                         action: function(){
@@ -268,11 +273,11 @@
         $('.reject-req').click(function (e) {
             e.preventDefault();
             $.confirm({
-                title: 'Tolak Kebutuhan',
-                content: 'Ulang dari tahap?',
+                title: 'Tolak Persetujuan',
+                content: 'Ulangi dari?',
                 buttons: {
                     fromBusinessGoals: {
-                        text: 'Business Goals',
+                        text: 'Pendefinisian Tujuan Bisnis Proyek',
                         btnClass: 'btn-red',
                         keys: ['enter', 'shift'],
                         action: function(){
@@ -304,19 +309,17 @@
         $('.accept-req').click(function (e) {
             e.preventDefault();
             $.confirm({
-                title: 'Persetujuan',
+                title: 'Persetujuan Kebutuhan Proyek',
                 content: 'Setujui kebutuhan?',
                 buttons: {
                     confirm: {
-                        text: 'Setujui',
-                        btnClass: 'btn-primary',
+                        text: 'OK',
                         action: function(){
                             $('#acceptProcess').submit();
                         }
                     },
                     cancel: {
-                        text: 'Batal',
-                        btnClass: 'btn-danger',
+                        text: 'cancel',
                         action: function(){
 
                         }
@@ -329,7 +332,7 @@
             e.preventDefault();
             $.confirm({
                 title: 'Pengajuan',
-                content: 'Anda yakin mengajukan?',
+                content: 'Anda yakin ingin mengajukan?',
                 buttons: {
                     confirm: {
                         text: 'OK',

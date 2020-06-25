@@ -39,19 +39,19 @@ class ProjectController extends Controller
     {
         switch ($last_process){
             case "BUSINESS_GOALS":
-                return 'Business Goals';
+                return 'Tujuan Bisnis Proyek';
             case "CBP":
-                return 'Current Business Process';
+                return 'Penggambaran Proses Bisnis Saat Ini';
             case "FIND_PATTERN":
-                return 'Find Pattern';
+                return 'Penggunaan Template';
             case "FBP":
-                return 'Future Business Process';
+                return 'Penggambaran Proses Bisnis Proyek';
             case "REQ_DEF":
-                return 'Requirements Definition';
+                return 'Pendefinisian Kebutuhan';
             case "ACCEPTANCE":
-                return 'Acceptance';
+                return 'Persetujuan Kebutuhan Proyek';
             case "COMPLETED":
-                return 'Completed';
+                return 'Selesai';
             default:
                 return 'UNKNOWN';
         }
@@ -294,8 +294,9 @@ class ProjectController extends Controller
 
     public function acceptRequirements(Request $request)
     {
+        $this->projectService->updateStatus($request->project_id, 'Disetujui');
         if ($this->projectService->updateLastProcess($request->project_id, 'COMPLETED')){
-            return $this->show($request->project_id);
+            return redirect()->to('/project/'.$request->project_id);
         } else {
             return abort(404);
         }
@@ -325,7 +326,8 @@ class ProjectController extends Controller
 
     public function findPattern($project_id){
         $patterns = BpmnPattern::select(['id', 'title', 'description', 'category'])->get();
-        return view('projects/find_pattern')->with('project_id', $project_id)->with('patterns', $patterns);
+        $project = Project::findOrFail($project_id);
+        return view('projects/find_pattern')->with('project', $project)->with('patterns', $patterns);
     }
 
     public function saveBusinessProcess(Request $request)
@@ -367,7 +369,8 @@ class ProjectController extends Controller
 
     public function usePattern(Request $request)
     {
-        return $this->getFutureBusinessProcess($request->project_id, $request->pattern_id);
+        return redirect()->to('/project/'.$request->project_id.'/future_business_process/'.$request->pattern_id);
+//        return $this->getFutureBusinessProcess($request->project_id, $request->pattern_id);
     }
 
     public function skipPattern(Request $request)

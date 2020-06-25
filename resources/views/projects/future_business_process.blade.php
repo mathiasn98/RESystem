@@ -4,12 +4,14 @@
         <form id="createCurrentBusinessProcess" method="POST" action="{{ route('project.save_business_process') }}">
             @csrf
             <div class="form-group">
-                <h2 style="display: inline-block">Future Business Process</h2>
+                <h2 style="display: inline-block">Proses Bisnis Proyek</h2>
                 <a class="btn btn-danger float-right" href="{{ URL::previous() }}" style="display: inline-block">Batal</a>
-                <button id="save-button" type="submit" class="btn btn-success float-right mr-2" style="display: inline-block">Simpan</button>
-                <a class="btn btn-primary float-right mr-4" href="{{ route('project.duplicate_business_process', [$project->id]) }}" style="display: inline-block">Gunakan Current Business Process</a>
+                @if($project->last_process == 'FBP' || $project->last_process == 'FIND_PATTERN')
+                    <button id="save-button" type="submit" class="btn btn-success float-right mr-2" style="display: inline-block">Simpan</button>
+                @endif
+                <a class="btn btn-primary float-right mr-4" href="{{ route('project.duplicate_business_process', [$project->id]) }}" style="display: inline-block">Gunakan Proses Bisnis Saat Ini</a>
                 <div>Gambarkan Proses Bisnis yang telah dijalankan di perusahaan</div>
-                <div style="display: inline-block">Anda juga dapat menggunakan Current Business Process</div>
+                <div style="display: inline-block">Anda juga dapat menggunakan Proses Bisnis Saat Ini (Tahap 2)</div>
             </div>
             <input id="this-noise" type="hidden" />
             <input id="bpmn-value" name="bpmn" type="hidden"

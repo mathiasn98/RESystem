@@ -4,12 +4,14 @@
         <form id="createCurrentBusinessProcess" method="POST" action="{{ route('project.save_business_process') }}">
             @csrf
             <div class="form-group">
-                <h2 style="display: inline-block">Current Business Process</h2>
+                <h2 style="display: inline-block">Proses Bisnis Saat Ini</h2>
                 @if (Auth::user()->role == 'Software Developer')
                     <a class="btn btn-primary float-right ml-2" href="{{ URL::previous() }}" style="display:inline-block">Kembali</a>
                 @else
                     <a class="btn btn-danger float-right ml-2" href="{{ URL::previous() }}" style="display: inline-block">Batal</a>
-                    <button id="save-button" type="submit" class="btn btn-success float-right" style="display: inline-block">Simpan</button>
+                    @if($project->last_process == 'CBP')
+                        <button id="save-button" type="submit" class="btn btn-success float-right" style="display: inline-block">Simpan</button>
+                    @endif
                 @endif
                 <div>Gambarkan Proses Bisnis yang telah dijalankan di perusahaan</div>
             </div>

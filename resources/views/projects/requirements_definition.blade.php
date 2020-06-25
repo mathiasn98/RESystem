@@ -5,16 +5,18 @@
             @csrf
             <div class="form-group">
                 <div>
-                    <h2 style="display: inline-block">Kebutuhan</h2>
+                    <h2 style="display: inline-block">Pendefinisian Kebutuhan</h2>
                     <a class="btn btn-danger float-right ml-2" href="{{ URL::previous() }}" style="display:inline-block">Batal</a>
-                    <button type="submit" id="save" class="btn btn-success float-right" style="display:inline-block">Simpan</button>
+                    @if($project->last_process == 'REQ_DEF')
+                        <button type="submit" id="save" class="btn btn-success float-right" style="display:inline-block">Simpan</button>
+                    @endif
                     <div>Definisikan kebutuhan fungsional dan non-fungsional dari proyek ini</div>
-                    <div>Kebutuhan dibuat berdasarkan Future Business Process Diagram</div>
+                    <div>Kebutuhan dibuat berdasarkan Proses Bisnis Proyek</div>
                     <input name="project_id" class="form-control" type="hidden" value="{{ $project->id }}">
                 </div>
             </div>
             <div style="background-color: lightcyan">
-                <h5>Future Business Process Diagram</h5>
+                <h5>Proses Bisnis Proyek</h5>
                 <small>Geser pada diagram untuk mengubah posisi</small>
                 <input id="nav-bpmn-value" style="visibility: hidden" value="{{ $bpmn }}">
                 <div id="nav-canvas" style="width: 1132px; height: 400px; border-style: dotted; border-width: 2px"></div>

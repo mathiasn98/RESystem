@@ -30,12 +30,25 @@
                     <span>Terakhir diubah pada <b>{{ $project->updated_at }}</b> oleh <b>{{ $project->updated_by }}</b></span>
                 </small>
             </div>
+
+            <p>
+                <b>Kontributor: </b>
+                @foreach ($contributors as $contributor)
+                    @if ($loop->last)
+                        <span>{{ $contributor->username }}</span>
+                    @else
+                        <span>{{ $contributor->username }},</span>
+                    @endif
+                @endforeach
+            </p>
+
+            <p><b>Deskripsi: </b>{{ $project->description }}</p>
         </div>
 
         <input id="bpmn-value" name="bpmn" type="hidden"
                value='{{ $bpmn_cbp }}' />
 
-        <h2>Daftar Business Goals</h2>
+        <h2>Tujuan Bisnis Proyek</h2>
         <ol class="list-group">
             @foreach($business_goals as $business_goal)
                 <li class="list-group-item">
@@ -45,6 +58,11 @@
         </ol>
 
         <h2></h2>
+
+        <h2>Diagram Proses Bisnis</h2>
+        <div>
+            <img id="fbp-img-png" style="width: 800px">
+        </div>
 
         <h2>Daftar Kebutuhan Fungsional</h2>
         <ol class="list-group">
@@ -68,15 +86,10 @@
             @endforeach
         </ol>
 
-        <h2>Current Business Process</h2>
-        <div>
-            <img id="cbp-img-png" style="width: 800px">
-        </div>
-
-        <h2>Future Business Process</h2>
-        <div>
-            <img id="fbp-img-png" style="width: 800px">
-        </div>
+{{--        <h2>Current Business Process</h2>--}}
+{{--        <div>--}}
+{{--            <img id="cbp-img-png" style="width: 800px">--}}
+{{--        </div>--}}
     </div>
 @endsection
 
