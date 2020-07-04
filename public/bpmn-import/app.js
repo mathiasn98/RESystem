@@ -450,7 +450,7 @@ class CustomRenderer extends diagram_js_lib_draw_BaseRenderer__WEBPACK_IMPORTED_
 
       Object(tiny_svg__WEBPACK_IMPORTED_MODULE_1__["classes"])(text).add('djs-label'); 
     
-      Object(tiny_svg__WEBPACK_IMPORTED_MODULE_1__["append"])(text, document.createTextNode('SW-Based')); 
+      Object(tiny_svg__WEBPACK_IMPORTED_MODULE_1__["append"])(text, document.createTextNode('Software')); 
     
       Object(tiny_svg__WEBPACK_IMPORTED_MODULE_1__["append"])(parentNode, text);
     }
@@ -786,7 +786,7 @@ class CustomRenderer extends diagram_js_lib_draw_BaseRenderer__WEBPACK_IMPORTED_
 
       Object(tiny_svg__WEBPACK_IMPORTED_MODULE_1__["classes"])(text).add('djs-label'); 
     
-      Object(tiny_svg__WEBPACK_IMPORTED_MODULE_1__["append"])(text, document.createTextNode('SW-Based')); 
+      Object(tiny_svg__WEBPACK_IMPORTED_MODULE_1__["append"])(text, document.createTextNode('Software')); 
     
       Object(tiny_svg__WEBPACK_IMPORTED_MODULE_1__["append"])(parentNode, text);
     }

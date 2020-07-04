@@ -121,39 +121,39 @@
                         <div>Kebutuhan dapat diunduh pada link <a href="{{ route('project.export', [$project->id]) }}" target="_blank">berikut</a></div>
                     @if($project->status == 'DitolakCBP')
                         @if(Auth::user()->role == 'Business Owner')
-                            <div class="alert alert-danger">Kebutuhan ditolak oleh Software Developer dengan meminta pengulangan dari Pendefinsian Kebutuhan</div>
+                            <div class="alert alert-danger">Kebutuhan ditolak oleh Pengembang Perangkat Lunak dengan meminta pengulangan dari Penggambaran Proses Bisnis Proyek</div>
                         @else
-                            <div class="alert alert-danger">Anda telah menolak kebutuhan dengan meminta pengulangan dari Pendefinsian Kebutuhan</div>
+                            <div class="alert alert-danger">Anda telah menolak kebutuhan dengan meminta pengulangan dari Penggambaran Proses Bisnis Proyek</div>
                         @endif
                     @elseif($project->status == 'DitolakBG')
                         @if(Auth::user()->role == 'Business Owner')
-                            <div class="alert alert-danger">Kebutuhan ditolak oleh Software Developer dengan meminta pengulangan dari Business Goals</div>
+                            <div class="alert alert-danger">Kebutuhan ditolak oleh Pengembang Perangkat Lunak dengan meminta pengulangan dari Pendefinisan Tujuan Bisnis Proyek</div>
                         @else
-                            <div class="alert alert-danger">Anda telah menolak kebutuhan dengan meminta pengulangan dari Business Goals</div>
+                            <div class="alert alert-danger">Anda telah menolak kebutuhan dengan meminta pengulangan dari Pendefinisan Tujuan Bisnis Proyek</div>
                         @endif
                     @else
-                            @if(Auth::user()->role == 'Business Owner')
-                                <div>Ajukan persetujuan kebutuhan kepada Software Developer atau ulangi tahapan proyek</div>
+                            @if(Auth::user()->role == 'Software Developer')
+                                <div>Ajukan persetujuan kebutuhan kepada Pemilik Bisnis atau ulangi tahapan proyek</div>
                             @else
                                 <div>Setujui atau tolak permintaan persetujuan proyek</div>
                             @endif
                     @endif
                         <div class="step-actions">
-                            @if(Auth::user()->role == 'Software Developer')
-                                @if($project->status == 'Diajukan')
+                            @if(Auth::user()->role == 'Business Owner')
+                                @if($project->status == 'Aktif')
+                                    <div>Silakan tunggu hingga diajukan oleh Pengembang Perangkat Lunak</div>
+                                @else
                                     <button class="accept-req waves-effect waves-dark btn btn-success">SETUJU</button>
-                                    <button class="reject-req btn btn-danger ml-2">TOLAK</button>
-                                @elseif($project->status == 'Disetujui')
-                                    <div>Silakan tunggu hingga diajukan oleh business owner</div>
+                                    <button class="reset-req btn btn-danger ml-2">ULANGI</button>
                                 @endif
                             @else
                                 @if($project->status == 'Diajukan')
-                                    <div class="alert alert-primary" role="alert">Silakan tunggu persetujuan dari software developer</div>
+                                    <div class="alert alert-primary" role="alert">Silakan tunggu persetujuan dari Pemilik Bisnis</div>
                                 @elseif($project->status == 'Disetujui')
                                     <div class="alert alert-success" role="alert">Kebutuhan telah disetujui</div>
-                                @else
+                                @elseif($project->status == 'Aktif')
                                     <button class="submit-req waves-effect waves-dark btn btn-primary" href="{{ route('project.submit', [$project->id]) }}">AJUKAN</button>
-                                    <button class="reset-req btn btn-danger ml-2">ULANGI</button>
+                                    <button class="reject-req btn btn-danger ml-2">TOLAK</button>
                                 @endif
                             @endif
                         </div>
@@ -239,7 +239,7 @@
         $('.reset-req').click(function (e) {
             e.preventDefault();
             $.confirm({
-                title: 'Ulangi Proyek',
+                title: 'Ulangi Kebutuhan Proyek',
                 content: 'Ulangi dari?',
                 buttons: {
                     fromBusinessGoals: {
@@ -252,11 +252,11 @@
                         }
                     },
                     fromRequirementsDefinition: {
-                        text: 'Pendefinisian Kebutuhan',
+                        text: 'Penggambaran Proses Bisnis Proyek',
                         btnClass: 'btn-blue',
                         keys: ['enter', 'shift'],
                         action: function(){
-                            $('#reset_from').val('REQ_DEF');
+                            $('#reset_from').val('FIND_PATTERN');
                             $('#resetProcess').submit();
                         }
                     },
@@ -283,17 +283,17 @@
                         action: function(){
                             $('#reject_from').val('DitolakBG');
                             $('#rejectProcess').submit();
-                            $.alert('Penolakan disampaikan ke Business Owner');
+                            $.alert('Penolakan disampaikan ke Pengembang Perangkat Lunak');
                         }
                     },
                     fromRequirementsDefinition: {
-                        text: 'Pendefinisian Kebutuhan',
+                        text: 'Penggambaran Proses Bisnis Proyek',
                         btnClass: 'btn-blue',
                         keys: ['enter', 'shift'],
                         action: function(){
-                            $('#reject_from').val('DitolakCBP');
+                            $('#reject_from').val('FIND_PATTERN');
                             $('#rejectProcess').submit();
-                            $.alert('Penolakan disampaikan ke Business Owner');
+                            $.alert('Penolakan disampaikan ke Pengembang Perangkat Lunak');
                         }
                     },
                     cancel: {

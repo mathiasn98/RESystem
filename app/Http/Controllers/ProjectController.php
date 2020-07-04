@@ -282,11 +282,7 @@ class ProjectController extends Controller
     {
         if ($this->projectService->updateLastProcess($request->project_id, $request->reset_from)){
             $this->projectService->updateStatus($request->project_id, 'Aktif');
-            if ($request->reset_from == 'BUSINESS_GOALS'){
-                return redirect()->to('/project/'.$request->project_id.'/business_goals');
-            } else {
-                return redirect()->to('/project/'.$request->project_id.'/requirements_definition');
-            }
+            return redirect()->to('/project/'.$request->project_id);
         } else {
             return abort(404);
         }
