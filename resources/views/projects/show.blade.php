@@ -291,7 +291,7 @@
                         btnClass: 'btn-blue',
                         keys: ['enter', 'shift'],
                         action: function(){
-                            $('#reject_from').val('FIND_PATTERN');
+                            $('#reject_from').val('DitolakCBP');
                             $('#rejectProcess').submit();
                             $.alert('Penolakan disampaikan ke Pengembang Perangkat Lunak');
                         }

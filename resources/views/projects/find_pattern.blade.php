@@ -3,7 +3,7 @@
     <div class="container pl-1 pr-1">
         <div>
             <h2 style="display: inline-block">Daftar Template</h2>
-            <a class="btn btn-danger float-right ml-2" href="{{ URL::previous() }}" style="display:inline-block">Batal</a>
+            <a class="btn btn-danger float-right ml-2" href="{{ route('project.show', [$project->id]) }}" style="display:inline-block">Batal</a>
             @if($project->last_process == 'FIND_PATTERN')
                 <a style="display: inline-block; float:right;" role="button" class="btn btn-primary float-right trigger-alert" href="{{ route('project.skip_pattern', [$project->id]) }}">Lewati</a>
             @endif
