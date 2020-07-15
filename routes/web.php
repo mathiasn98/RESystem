@@ -106,10 +106,16 @@ Route::post('/project/{project_id}/download', [
     'uses' => 'ProjectController@download'
 ])->middleware('auth');
 
+Route::post('add_bpmn_pattern', [
+    'as' => 'project.add_bpmn_pattern',
+    'uses' => 'ProjectController@addPattern'
+]);
+
 Route::get('/', function () {
     return redirect(route('project.index'));
 })->middleware('auth');
 
+Route::get('/add_pattern', 'ProjectController@addPatternPage');
 
 Route::get('/home', 'HomeController@index')->name('home');
 

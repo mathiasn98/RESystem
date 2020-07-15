@@ -380,4 +380,26 @@ class ProjectController extends Controller
         $this->projectService->updateStatus($request->project_id, 'Diajukan');
         return redirect()->to('/project/'.$request->project_id);
     }
+
+    public function addPattern(Request $request)
+    {
+        $bpmnPattern = new BpmnPattern();
+
+        $bpmnPattern->title = $request->title;
+        $bpmnPattern->category = $request->category;
+        $bpmnPattern->description = $request->description;
+        $bpmnPattern->bpmn = $request->bpmn;
+
+        if ($bpmnPattern->save())
+        {
+            return 'Success';
+        } else {
+            return abort(404);
+        }
+    }
+
+    public function addPatternPage()
+    {
+        return view('projects/add_pattern');
+    }
 }
