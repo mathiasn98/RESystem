@@ -42,7 +42,7 @@
     <div class="container pl-1 pr-1">
         <ul class="stepper">
             <li class="step active">
-                <div class="step-title waves-effect">Pendefinisian Tujuan Bisnis Proyek</div>
+                <div class="step-title waves-effect">Pendefinisian Tujuan Bisnis Proyek <span class="badge badge-warning" style="color: black">Hanya Pemilik Bisnis</span></div>
                 <div class="step-content">
                     <div>Definisikan capaian yang diharapkan dalam proyek ini</div>
                     <div>Contoh:</div>
@@ -55,7 +55,7 @@
                 </div>
             </li>
             <li class="step inactive">
-                <div class="step-title waves-effect">Penggambaran Proses Bisnis Saat Ini</div>
+                <div class="step-title waves-effect">Penggambaran Proses Bisnis Saat Ini<span class="badge badge-warning" style="color: black">Hanya Pemilik Bisnis</span></div>
                 <div class="step-content">
                     <div>Gambarkan proses bisnis yang telah berjalan di perusahaan</div>
                     <div class="step-actions">
@@ -77,6 +77,9 @@
                         <button class="waves-effect waves-dark btn-flat previous-step">BACK</button>
                         @if($lastProcessIndex >=2)
                             <a class="btn btn-primary" href="{{ route('project.find_pattern', [$project->id]) }}">LIHAT</a>
+                            @if($lastProcessIndex == 2)
+                                <a class="btn btn-info skip-trigger-alert" href="{{ route('project.skip_pattern', [$project->id]) }}">LEWATI</a>
+                            @endif
                         @else
                             <a class="btn btn-primary trigger-alert" href="#">LIHAT</a>
                         @endif
@@ -226,6 +229,10 @@
                 e.preventDefault();
                 alert('Silakan selesaikan tahapan sebelumnya terlebih dahulu');
             })
+            $('.skip-trigger-alert').confirm({
+                title: "Lewati penggunaan template?",
+                content: "Anda akan menggambarkan proses bisnis tanpa menggunakan template"
+            });
 
         });
 

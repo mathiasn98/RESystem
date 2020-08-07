@@ -4,9 +4,7 @@
         @if (count($projects) > 0)
             <div>
                 <h2 style="display: inline-block">Daftar Proyek</h2>
-                @if(Auth::user()->role == 'Business Owner')
-                    <a style="display: inline-block; float:right;" class="btn btn-success" href="{{ route('project.create') }}" role="button">Tambah Proyek</a>
-                @endif
+                <a style="display: inline-block; float:right;" class="btn btn-success" href="{{ route('project.create') }}" role="button">Tambah Proyek</a>
             </div>
             <table class="table table-hover">
                 <thead class="thead-dark">
