@@ -48,9 +48,7 @@
             </table>
         @else
             <h2 style="display: inline-block">Anda tidak memiliki proyek</h2>
-            @if(Auth::user()->role == 'Business Owner')
-                <a style="display: inline-block; float:right;" class="btn btn-success" href="{{ route('project.create') }}" role="button">Tambah Proyek</a>
-            @endif
+            <a style="display: inline-block; float:right;" class="btn btn-success" href="{{ route('project.create') }}" role="button">Tambah Proyek</a>
         @endif
 
     </div>
