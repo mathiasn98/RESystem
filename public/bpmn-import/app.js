@@ -698,7 +698,7 @@ class CustomPalette {
         type: 'bpmn:Task',
         group: 'activity',
         className: 'bpmn-icon-task red',
-        title: translate('Create Software-Based Task'),
+        title: translate('Aktivitas Berbasis Perangkat Lunak'),
         action: {
           dragstart: createTask(SUITABILITY_SCORE_LOW),
           click: createTask(SUITABILITY_SCORE_LOW)
@@ -18921,21 +18921,24 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
       separator: true
     },
     'create.start-event': createAction(
-      'bpmn:StartEvent', 'event', 'bpmn-icon-start-event-none'
+      'bpmn:StartEvent', 'event', 'bpmn-icon-start-event-none',
+      translate('Mulai')
     ),
     // 'create.intermediate-event': createAction(
     //   'bpmn:IntermediateThrowEvent', 'event', 'bpmn-icon-intermediate-event-none',
     //   translate('Create Intermediate/Boundary Event')
     // ),
     'create.end-event': createAction(
-      'bpmn:EndEvent', 'event', 'bpmn-icon-end-event-none'
+      'bpmn:EndEvent', 'event', 'bpmn-icon-end-event-none',
+      translate('Selesai')
     ),
     'create.exclusive-gateway': createAction(
       'bpmn:ExclusiveGateway', 'gateway', 'bpmn-icon-gateway-none',
-      translate('Create Gateway')
+      translate('Pilihan')
     ),
     'create.task': createAction(
-      'bpmn:Task', 'activity', 'bpmn-icon-task'
+      'bpmn:Task', 'activity', 'bpmn-icon-task',
+      translate('Aktivitas')
     ),
     // 'create.data-object': createAction(
     //   'bpmn:DataObjectReference', 'data-object', 'bpmn-icon-data-object'
@@ -18951,7 +18954,7 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
     'create.participant-expanded': {
       group: 'collaboration',
       className: 'bpmn-icon-participant',
-      title: translate('Create Pool/Participant'),
+      title: translate('Pool/Lane (Entitas/Orang dalam Proses)'),
       action: {
         dragstart: createParticipant,
         click: createParticipant
