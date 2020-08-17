@@ -145,6 +145,9 @@
                             @if(Auth::user()->role == 'Business Owner')
                                 @if($project->status == 'Aktif')
                                     <div>Silakan tunggu hingga diajukan oleh Pengembang Perangkat Lunak</div>
+                                @elseif($project->status == 'DitolakCBP' || $project->status == 'DitolakBG')
+                                    <button class="accept-req waves-effect waves-dark btn btn-success" disabled>SETUJU</button>
+                                    <button class="reset-req btn btn-danger ml-2">ULANGI</button>
                                 @else
                                     <button class="accept-req waves-effect waves-dark btn btn-success">SETUJU</button>
                                     <button class="reset-req btn btn-danger ml-2">ULANGI</button>
